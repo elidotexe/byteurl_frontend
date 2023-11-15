@@ -14,6 +14,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { toast } from "../ui/use-toast";
 
 const FormSchema = z.object({
   email: z.string().min(5, "Email is too short").email("Email is invalid"),
@@ -33,7 +34,16 @@ const LoginForm = () => {
 
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
     if (values.email === "admin@example.com" && values.password === "secret") {
-      router.push("/dashboard");
+      // router.push("/dashboard");
+
+      return toast({
+        title: "You have successfully logged in!",
+      });
+    } else {
+      toast({
+        title: "Invalid credentials",
+        description: "Please try again",
+      });
     }
   };
 
@@ -46,7 +56,15 @@ const LoginForm = () => {
           render={({ field }) => (
             <FormItem className="mb-3">
               <FormControl>
-                <Input placeholder="name@example.com" {...field} />
+                <Input
+                  id="email"
+                  type="email"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  autoCorrect="off"
+                  placeholder="name@example.com"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -58,7 +76,12 @@ const LoginForm = () => {
           render={({ field }) => (
             <FormItem className="mb-6">
               <FormControl>
-                <Input placeholder="Password" {...field} />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

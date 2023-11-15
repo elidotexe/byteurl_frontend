@@ -1,9 +1,16 @@
+import { Metadata } from "next";
 import Link from "next/link";
+
 import { Atom, ChevronLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
 import LoginForm from "@/components/auth/login-form";
+
+export const metadata: Metadata = {
+  title: "Login",
+  description: "Login to your account",
+};
 
 const LoginPage = () => {
   return (
@@ -35,7 +42,7 @@ const LoginPage = () => {
             <p className="px-8 text-center text-sm text-muted-foreground">
               <Link
                 className="hover:text-brand underline underline-offset-4"
-                href="register"
+                href="/register"
               >
                 Don't have an account? Sign Up
               </Link>
