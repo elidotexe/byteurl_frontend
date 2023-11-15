@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { ChevronLeft, LinkIcon } from "lucide-react";
+import { Atom, ChevronLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-import LoginForm from "@/components/auth/LoginForm";
+import LoginForm from "@/components/auth/login-form";
 
 const LoginPage = () => {
   return (
@@ -20,7 +20,7 @@ const LoginPage = () => {
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <div className="flex items-center justify-center">
-                <LinkIcon />
+                <Atom />
               </div>
               <h1 className="text-2xl font-semibold tracking-tight">
                 Welcome back

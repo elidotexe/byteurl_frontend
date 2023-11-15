@@ -1,7 +1,7 @@
-import Hero from "@/components/elements/Hero";
-import Nav from "@/components/navigation/Nav";
-import Footer from "@/components/navigation/Footer";
-import { marketingConfig } from "@/config/Marketing";
+import Hero from "@/components/elements/hero";
+import Nav from "@/components/navigation/nav";
+import Footer from "@/components/navigation/footer";
+import { marketingConfig } from "@/config/marketing";
 
 export default function Home() {
   return (

@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { LinkIcon } from "lucide-react";
+import { Atom } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-import RegForm from "@/components/auth/RegForm";
+import RegisterForm from "@/components/auth/register-form";
 
 const RegisterPage = () => {
   return (
@@ -23,7 +23,7 @@ const RegisterPage = () => {
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
               <div className="flex flex-col space-y-2 text-center">
                 <div className="flex items-center justify-center">
-                  <LinkIcon />
+                  <Atom />
                 </div>
                 <h1 className="text-2xl font-semibold tracking-tight">
                   Create an account
@@ -33,7 +33,7 @@ const RegisterPage = () => {
                 </p>
               </div>
               <div className="grid grid-6">
-                <RegForm />
+                <RegisterForm />
               </div>
               <p className="px-8 text-center text-sm text-muted-foreground">
                 By clicking continue, you agree to our{" "}

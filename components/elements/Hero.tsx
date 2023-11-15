@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
-import PaddingContainer from "../layout/PaddingContainer";
+
+import PaddingContainer from "../layout/padding-container";
 
 const Hero = () => {
   return (

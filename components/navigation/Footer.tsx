@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { Link as LinkIcon } from "lucide-react";
-import PaddingContainer from "../layout/PaddingContainer";
+
+import { Atom } from "lucide-react";
 import { ModeToggle } from "../theme/ModeToggle";
+
+import PaddingContainer from "../layout/padding-container";
 
 const Footer = () => {
   return (
@@ -11,7 +13,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center text-sm">
               <div className="mr-2">
-                <LinkIcon />
+                <Atom />
               </div>
               <div>
                 Built by{" "}
