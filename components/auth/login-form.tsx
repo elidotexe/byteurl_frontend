@@ -1,7 +1,9 @@
 "use client";
 
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+
 import {
   Form,
   FormControl,
@@ -9,19 +11,39 @@ import {
   FormItem,
   FormMessage,
 } from "../ui/form";
-
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery } from "@tanstack/react-query";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
+import { useState } from "react";
 
 const FormSchema = z.object({
   email: z.string().min(5, "Email is too short").email("Email is invalid"),
-  password: z.string().min(4, "Password is too short"),
+  password: z.string().min(8, "Password is too short"),
 });
 
+const login = async (email: string, password: string) => {
+  const { data } = await axios.post(
+    "http://localhost:3000/login",
+    {
+      email,
+      password,
+    },
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+
+  return data;
+};
+
 const LoginForm = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -30,21 +52,25 @@ const LoginForm = () => {
     },
   });
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    if (values.email === "admin@example.com" && values.password === "secret") {
-      // router.push("/dashboard");
+  const onSubmit = async (v: z.infer<typeof FormSchema>) => {
+    setEmail(v.email);
+    setPassword(v.password);
 
-      return toast({
-        title: "You have successfully logged in!",
-      });
-    } else {
-      toast({
-        title: "Invalid credentials",
-        description: "Please try again",
-      });
-    }
+    // if (v.email === "admin@example.com" && v.password === "secret") {
+    //
+    //   // router.push("/dashboard");
+    //
+    //   return toast({
+    //     title: "You have successfully logged in!",
+    //   });
+    // } else {
+    //   toast({
+    //     title: "Invalid credentials",
+    //     description: "Please try again",
+    //   });
+    // }
   };
 
   return (
@@ -62,7 +88,7 @@ const LoginForm = () => {
                   autoCapitalize="none"
                   autoComplete="email"
                   autoCorrect="off"
-                  placeholder="name@example.com"
+                  placeholder="Email"
                   {...field}
                 />
               </FormControl>
@@ -70,6 +96,7 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="password"

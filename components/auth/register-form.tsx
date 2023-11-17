@@ -14,11 +14,12 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { toast } from "../ui/use-toast";
 
 const FormSchema = z.object({
   email: z.string().min(5, "Email is too short").email("Email is invalid"),
-  password: z.string().min(4, "Password is too short"),
-  confirmPassword: z.string().min(4, "Password is too short"),
+  password: z.string().min(8, "Password is too short"),
+  confirmPassword: z.string().min(8, "Password is too short"),
 });
 
 const RegisterForm = () => {
@@ -36,6 +37,15 @@ const RegisterForm = () => {
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
     if (values.email === "admin@example.com" && values.password === "secret") {
       router.push("/dashboard");
+
+      return toast({
+        title: "You have successfully logged in!",
+      });
+    } else {
+      toast({
+        title: "Invalid credentials",
+        description: "Please try again",
+      });
     }
   };
 
@@ -48,31 +58,51 @@ const RegisterForm = () => {
           render={({ field }) => (
             <FormItem className="mb-3">
               <FormControl>
-                <Input placeholder="name@example.com" {...field} />
+                <Input
+                  id="email"
+                  type="email"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  autoCorrect="off"
+                  placeholder="Email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="password"
           render={({ field }) => (
             <FormItem className="mb-3">
               <FormControl>
-                <Input placeholder="Password" {...field} />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="confirmPassword"
           render={({ field }) => (
             <FormItem className="mb-6">
               <FormControl>
-                <Input placeholder="Confirm password" {...field} />
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

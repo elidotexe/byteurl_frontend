@@ -1,11 +1,11 @@
-import { Inter as FontSans } from "next/font/google";
 import type { Metadata } from "next";
+import { Inter as FontSans } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
 import { cn } from "@/lib/utils";
-
-import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import TranstackProvider from "@/components/providers/transtack-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 
 const fontSans = FontSans({
@@ -37,15 +37,17 @@ export default function RootLayout({
           fontHeading.variable
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <TranstackProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </TranstackProvider>
       </body>
     </html>
   );

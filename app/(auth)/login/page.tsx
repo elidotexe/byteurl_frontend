@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import Link from "next/link";
 
-import { Atom, ChevronLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
 import LoginForm from "@/components/auth/login-form";
+import { Icons } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -20,14 +20,14 @@ const LoginPage = () => {
           className={cn(buttonVariants({ variant: "ghost" }), "absolute top-8")}
           href="/"
         >
-          <ChevronLeft className="mr-2 h-4 w-4" />
+          <Icons.chevronLeft className="mr-2 h-4 w-4" />
           <>Back</>
         </Link>
         <div className="flex justify-center flex-col items-center h-screen">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <div className="flex items-center justify-center">
-                <Atom />
+                <Icons.logo />
               </div>
               <h1 className="text-2xl font-semibold tracking-tight">
                 Welcome back
