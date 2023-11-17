@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 import { marketingConfig } from "@/config/marketing";
-import { Button } from "@/components/ui/button";
 
+import { Button } from "@/components/ui/button";
 import PaddingContainer from "@/components/layout/padding-container";
 import Nav from "@/components/navigation/nav";
 import Hero from "@/components/elements/hero";

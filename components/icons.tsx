@@ -7,7 +7,7 @@ import {
   Atom,
   CreditCard,
   File,
-  FileText,
+  Link as LinkIcon,
   HelpCircle,
   Image,
   Laptop,
@@ -23,7 +23,10 @@ import {
   Twitter,
   User,
   X,
+  type Icon as LucideIcon,
 } from "lucide-react";
+
+export type Icon = LucideIcon;
 
 export const Icons = {
   logo: Atom,
@@ -32,7 +35,7 @@ export const Icons = {
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
   trash: Trash,
-  post: FileText,
+  link: LinkIcon,
   page: File,
   media: Image,
   settings: Settings,

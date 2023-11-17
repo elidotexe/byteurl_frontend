@@ -1,9 +1,11 @@
 "use client";
 
-import { SidebarNavItem } from "@/types";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+import { cn } from "@/lib/utils";
+import { SidebarNavItem } from "@/types";
+import { Icons } from "@/components/icons";
 
 interface DashboardNavProps {
   items: SidebarNavItem[];
@@ -17,7 +19,8 @@ const DashboardNav = ({ items }: DashboardNavProps) => {
   return (
     <nav className="grid items-start gap-2">
       {items.map((item, index) => {
-        const Icon = Icons[item.icon || "arrowRight"];
+        const Icon = Icons[item.icon || "arrowRight"]!;
+
         return (
           item.href && (
             <Link key={index} href={item.disabled ? "/" : item.href}>
