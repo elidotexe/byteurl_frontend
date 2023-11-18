@@ -34,7 +34,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           {children}
         </main>
       </div>
-      <Footer />
+      <Footer className="border-t" />
     </div>
   );
 }

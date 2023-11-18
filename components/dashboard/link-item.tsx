@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { formatDate } from "@/lib/utils";
+import LinkOperations from "./link-operations";
 
 interface LinkItemProps {
   link: any;
@@ -22,9 +23,9 @@ const LinkItem = ({ link }: LinkItemProps) => {
           </p>
         </div>
       </div>
+      <LinkOperations link={{ id: link.id, title: link.title }} />
     </div>
   );
 };
-// <PostOperations post={{ id: post.id, title: post.title }} />
 
 export default LinkItem;

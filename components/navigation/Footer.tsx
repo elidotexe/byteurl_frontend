@@ -1,12 +1,15 @@
+import * as React from "react";
 import Link from "next/link";
+
+import { cn } from "@/lib/utils";
 
 import PaddingContainer from "../layout/padding-container";
 import { Icons } from "../icons";
 import { ModeToggle } from "../theme/mode-toggle";
 
-const Footer = () => {
+const Footer = ({ className }: React.HTMLAttributes<HTMLElement>) => {
   return (
-    <footer className="fixed bottom-0 w-full">
+    <footer className={cn(className, "fixed bottom-0 w-full")}>
       <PaddingContainer>
         <div className="flex items-center justify-between">
           <div>
