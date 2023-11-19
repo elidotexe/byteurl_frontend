@@ -57,7 +57,7 @@ const LinkOperations = ({ link }: LinkOperationsProps) => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Are you sure you want to delete this post?
+              Are you sure you want to delete this link?
             </AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone.

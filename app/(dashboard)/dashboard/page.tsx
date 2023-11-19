@@ -1,17 +1,25 @@
+import Link from "next/link";
+
+import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/button";
+
+import { DashboardShell } from "@/components/dashboard/shell";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import DashboardHeader from "@/components/dashboard/header";
-import LinkCreateButton from "@/components/dashboard/link-create-button";
 import LinkItem from "@/components/dashboard/link-item";
-import { DashboardShell } from "@/components/dashboard/shell";
+import { Icons } from "@/components/icons";
 
 const DashboardPage = () => {
-  const links = [{ id: 1, link: "localhost:3000", title: "Hello" }] as any[];
-  // const links = [] as any[];
+  // const links = [{ id: 1, link: "localhost:3000", title: "Hello" }] as any[];
+  const links = [] as any[];
 
   return (
     <DashboardShell>
       <DashboardHeader heading="Links" text="Create and manage links.">
-        <LinkCreateButton />
+        <Link className={cn(buttonVariants())} href="/editor">
+          <Icons.add className="mr-2 h-4 w-4" />
+          New link
+        </Link>
       </DashboardHeader>
       <div>
         {links?.length ? (
@@ -27,7 +35,12 @@ const DashboardPage = () => {
             <EmptyPlaceholder.Description>
               You don&apos;t have any links yet. Start creating links.
             </EmptyPlaceholder.Description>
-            <LinkCreateButton variant="outline" />
+            <Button variant="outline" asChild>
+              <Link href="/editor">
+                <Icons.add className="mr-2 h-4 w-4" />
+                New link
+              </Link>
+            </Button>
           </EmptyPlaceholder>
         )}
       </div>
