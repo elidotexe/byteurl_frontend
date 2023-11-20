@@ -15,10 +15,10 @@ interface EditorPageProps {
 const EditorPage = ({ params }: EditorPageProps) => {
   return (
     <DashboardShell>
-      <DashboardHeader heading="Create new">
+      <DashboardHeader heading="Create or edit link">
         <Link
-          className={cn(buttonVariants({ variant: "ghost" }), "absolute top-8")}
-          href="/"
+          className={cn(buttonVariants({ variant: "ghost" }), "")}
+          href="/dashboard"
         >
           <Icons.chevronLeft className="mr-2 h-4 w-4" />
           <>Back</>
@@ -28,11 +28,5 @@ const EditorPage = ({ params }: EditorPageProps) => {
     </DashboardShell>
   );
 };
-
-// <DashboardHeader heading="Create new">
-//   <Link className={cn(buttonVariants())} href="/editor">
-//     Save
-//   </Link>
-// </DashboardHeader>
 
 export default EditorPage;

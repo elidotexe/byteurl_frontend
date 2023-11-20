@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,6 +22,9 @@ const FormSchema = z.object({
   title: z.string().min(2, {
     message: "Title must be at least 2 characters.",
   }),
+  link: z.string().min(2, {
+    message: "Link must be at least 2 characters.",
+  }),
 });
 
 const LinkForm = () => {
@@ -30,6 +32,7 @@ const LinkForm = () => {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
+      link: "",
     },
   });
 
@@ -52,13 +55,24 @@ const LinkForm = () => {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="ByteURL" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="link"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Link</FormLabel>
+              <FormControl>
+                <Input placeholder="https://byteurl.io/" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

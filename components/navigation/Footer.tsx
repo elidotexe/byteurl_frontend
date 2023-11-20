@@ -3,44 +3,35 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-import PaddingContainer from "../layout/padding-container";
 import { Icons } from "../icons";
 import { ModeToggle } from "../theme/mode-toggle";
 
 const Footer = ({ className }: React.HTMLAttributes<HTMLElement>) => {
   return (
-    <footer className={cn(className, "fixed bottom-0 w-full")}>
-      <PaddingContainer>
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="flex items-center text-sm">
-              <div className="mr-2">
-                <Icons.logo />
-              </div>
-              <div>
-                Built by{" "}
-                <Link
-                  className="font-medium underline underline-offset-4"
-                  href="#!"
-                >
-                  Eli
-                </Link>
-                . The source code is available on{" "}
-                <Link
-                  className="font-medium underline underline-offset-4"
-                  href="#!"
-                >
-                  GitHub
-                </Link>
-                .
-              </div>
-            </div>
-          </div>
-          <div>
-            <ModeToggle />
+    <footer className={cn(className)}>
+      <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
+        <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+          <Icons.logo />
+          <div className="text-sm">
+            Built by{" "}
+            <Link
+              className="font-medium underline underline-offset-4"
+              href="#!"
+            >
+              Eli
+            </Link>
+            . The source code is available on{" "}
+            <Link
+              className="font-medium underline underline-offset-4"
+              href="#!"
+            >
+              GitHub
+            </Link>
+            .
           </div>
         </div>
-      </PaddingContainer>
+        <ModeToggle />
+      </div>
     </footer>
   );
 };

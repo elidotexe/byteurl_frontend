@@ -1,29 +1,25 @@
-import Link from "next/link";
-
 import { dashboardConfig } from "@/config/dashboard";
 
-import { Button } from "@/components/ui/button";
 import Nav from "@/components/navigation/nav";
 import DashboardNav from "@/components/dashboard/dashboard-nav";
 import Footer from "@/components/navigation/footer";
+import UserAccountNav from "@/components/dashboard/user-account-nav";
 
 interface DashboardLayoutProps {
   children?: React.ReactNode;
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  const user = { name: "John Doe", image: null, email: "example@website.com" };
+
   return (
     <div className="flex min-h-screen flex-col space-y-6">
       <header className="sticky top-0 z-40 border-b bg-background">
         <div className="container flex h-16 items-center justify-between py-4">
           <Nav items={dashboardConfig.mainNav} />
-          <Button
-            className="bg-secondary hover:bg-secondary/80 h-9 rounded-md px-4 border-none text-sm font-medium transition-colors"
-            variant="outline"
-            asChild
-          >
-            <Link href="/">Sign out</Link>
-          </Button>
+          <UserAccountNav
+            user={{ name: user.name, image: user.image, email: user.email }}
+          />
         </div>
       </header>
       <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
