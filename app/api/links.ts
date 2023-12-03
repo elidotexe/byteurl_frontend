@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const linksApi = axios.create({
-  baseURL: "http://localhost:3000/app/api/",
+  baseURL: "http://localhost:3500",
 });
 
 export const getLinks = async () => {
-  const response = await linksApi.get("/db.json");
+  const response = await linksApi.get("/links");
   return response.data;
 };
 

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import TranstackProvider from "@/components/providers/transtack-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
+import AuthProvider from "@/components/providers/auth-provider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -44,8 +45,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
-            <Toaster />
+            <AuthProvider>
+              {children}
+              <Toaster />
+            </AuthProvider>
           </ThemeProvider>
         </TranstackProvider>
       </body>

@@ -8,7 +8,7 @@ import Nav from "@/components/navigation/nav";
 import Hero from "@/components/elements/hero";
 import Footer from "@/components/navigation/footer";
 
-export default function IndexPage() {
+const IndexPage = () => {
   return (
     <>
       <PaddingContainer>
@@ -29,4 +29,6 @@ export default function IndexPage() {
       <Footer />
     </>
   );
-}
+};
+
+export default IndexPage;

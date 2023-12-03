@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 
 import {
   Form,
@@ -13,37 +14,17 @@ import {
 } from "../ui/form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
-import { useState } from "react";
 
 const FormSchema = z.object({
   email: z.string().min(5, "Email is too short").email("Email is invalid"),
   password: z.string().min(8, "Password is too short"),
 });
 
-const login = async (email: string, password: string) => {
-  const { data } = await axios.post(
-    "http://localhost:3000/login",
-    {
-      email,
-      password,
-    },
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
-
-  return data;
-};
-
 const LoginForm = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -52,25 +33,35 @@ const LoginForm = () => {
     },
   });
 
-  // const router = useRouter();
+  const router = useRouter();
 
   const onSubmit = async (v: z.infer<typeof FormSchema>) => {
-    setEmail(v.email);
-    setPassword(v.password);
+    try {
+      const response = await signIn("credentials", {
+        redirect: false,
+        email: v.email,
+        password: v.password,
+      });
 
-    // if (v.email === "admin@example.com" && v.password === "secret") {
-    //
-    //   // router.push("/dashboard");
-    //
-    //   return toast({
-    //     title: "You have successfully logged in!",
-    //   });
-    // } else {
-    //   toast({
-    //     title: "Invalid credentials",
-    //     description: "Please try again",
-    //   });
-    // }
+      if (response?.status === 200) {
+        router.push("/dashboard");
+
+        return toast({
+          title: "You have successfully logged in!",
+        });
+      } else {
+        toast({
+          title: "Invalid credentials",
+          description: "Please try again",
+        });
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast({
+        title: "Something went wrong",
+        description: "Please try again",
+      });
+    }
   };
 
   return (
