@@ -1,4 +1,5 @@
 import axios from "axios";
+import { signOut } from "next-auth/react";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -48,5 +49,18 @@ export const options: NextAuthOptions = {
   ],
   pages: {
     signIn: "/login",
+  },
+  callbacks: {
+    async signOut({ session }) {
+      try {
+        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/logout`);
+        await signOut({ redirect: false });
+      } catch (err: any) {
+        console.error(
+          "Error during sign out",
+          err.response?.data || err.message
+        );
+      }
+    },
   },
 };

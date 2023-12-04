@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
@@ -45,11 +44,11 @@ const LoginForm = () => {
 
       if (response?.status === 200) {
         router.push("/dashboard");
-
         return toast({
           title: "You have successfully logged in!",
         });
       } else {
+        router.push("/login");
         toast({
           title: "Invalid credentials",
           description: "Please try again",
@@ -57,6 +56,7 @@ const LoginForm = () => {
       }
     } catch (err: any) {
       console.error(err);
+      router.push("/login");
       toast({
         title: "Something went wrong",
         description: "Please try again",
