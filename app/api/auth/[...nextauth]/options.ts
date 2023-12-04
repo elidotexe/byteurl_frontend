@@ -17,10 +17,13 @@ export const options: NextAuthOptions = {
           placeholder: "Password",
         },
       },
-      async authorize(credentials) {
+      async authorize(credentials, reg) {
+        const callbackUrl = reg?.body?.callbackUrl;
+        const apiTail = callbackUrl.includes("register") ? "signup" : "login";
+
         try {
           const response = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/login`,
+            `${process.env.NEXT_PUBLIC_API_URL}/api/${apiTail}`,
             {
               email: credentials?.email,
               password: credentials?.password,
@@ -40,15 +43,18 @@ export const options: NextAuthOptions = {
           }
         } catch (err: any) {
           console.error(
-            "Error during login",
+            "Error during authentication",
             err.response?.data || err.message
           );
         }
+
+        return null;
       },
     }),
   ],
   pages: {
     signIn: "/login",
+    newUser: "/register",
   },
   callbacks: {
     async signOut({ session }) {

@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
+
 import {
   Form,
   FormControl,
@@ -9,9 +11,9 @@ import {
   FormItem,
   FormMessage,
 } from "../ui/form";
-
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
@@ -34,16 +36,39 @@ const RegisterForm = () => {
 
   const router = useRouter();
 
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    if (values.email === "admin@example.com" && values.password === "secret") {
-      router.push("/dashboard");
-
-      return toast({
-        title: "You have successfully logged in!",
-      });
-    } else {
+  const onSubmit = async (v: z.infer<typeof FormSchema>) => {
+    if (v.password !== v.confirmPassword) {
       toast({
-        title: "Invalid credentials",
+        title: "Passwords do not match!",
+        description: "Please try again",
+      });
+      return;
+    }
+
+    try {
+      const response = await signIn("credentials", {
+        redirect: false,
+        email: v.email,
+        password: v.password,
+      });
+
+      if (response?.status === 200) {
+        router.push("/dashboard");
+        return toast({
+          title: "You have successfully created an account!",
+        });
+      } else {
+        router.push("/register");
+        toast({
+          title: "Invalid credentials",
+          description: "Please try again",
+        });
+      }
+    } catch (err: any) {
+      console.error(err);
+      router.push("/register");
+      toast({
+        title: "Something went wrong",
         description: "Please try again",
       });
     }
