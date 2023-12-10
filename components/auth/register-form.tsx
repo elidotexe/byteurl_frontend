@@ -24,7 +24,7 @@ const FormSchema = z.object({
   confirmPassword: z.string().min(8, "Password is too short"),
 });
 
-const RegisterForm = () => {
+const RegisterForm = (): JSX.Element => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -52,22 +52,28 @@ const RegisterForm = () => {
         password: v.password,
       });
 
+      console.log("response:", response);
+
       if (response?.status === 200) {
         router.push("/dashboard");
+
         return toast({
           title: "You have successfully created an account!",
         });
-      } else {
-        router.push("/register");
-        toast({
-          title: "Invalid credentials",
-          description: "Please try again",
-        });
       }
+
+      const errorObject = JSON.parse(response?.error ?? "{}");
+
+      return toast({
+        title: `${errorObject.error}!`,
+        description:
+          errorObject.status === 409
+            ? "Please try creating an account with a different email"
+            : "Please try again",
+      });
     } catch (err: any) {
       console.error(err);
-      router.push("/register");
-      toast({
+      return toast({
         title: "Something went wrong",
         description: "Please try again",
       });
@@ -133,6 +139,7 @@ const RegisterForm = () => {
             </FormItem>
           )}
         />
+
         <Button className="w-full" type="submit">
           Sign In with Email
         </Button>

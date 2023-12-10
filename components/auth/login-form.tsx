@@ -42,6 +42,8 @@ const LoginForm = () => {
         password: v.password,
       });
 
+      console.log("response", response);
+
       if (response?.status === 200) {
         router.push("/dashboard");
         return toast({
@@ -105,6 +107,7 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
+
         <Button className="w-full" type="submit">
           Sign In with Email
         </Button>

@@ -1,9 +1,16 @@
 import axios from "axios";
-import { signOut } from "next-auth/react";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const options: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === "development",
+  pages: {
+    signIn: "/login",
+  },
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -34,39 +41,41 @@ export const options: NextAuthOptions = {
               },
             }
           );
+          console.log("response", response.data);
 
           if (response.status === 200) {
-            const user = response.data;
-            return user;
-          } else {
-            return null;
+            return response.data;
           }
+
+          return null;
         } catch (err: any) {
-          console.error(
-            "Error during authentication",
-            err.response?.data || err.message
+          console.error(err.response?.data);
+
+          throw new Error(
+            JSON.stringify({
+              status: err.response?.status || 500,
+              error: err.response?.data.message || "Authentication failed",
+            })
           );
         }
-
-        return null;
       },
     }),
   ],
-  pages: {
-    signIn: "/login",
-    newUser: "/register",
-  },
   callbacks: {
-    async signOut({ session }) {
-      try {
-        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/logout`);
-        await signOut({ redirect: false });
-      } catch (err: any) {
-        console.error(
-          "Error during sign out",
-          err.response?.data || err.message
-        );
-      }
+    async jwt({ token, user, session }) {
+      // console.log("JWT callback", token, user, session);
+      return token;
+    },
+    async session({ session, token, user }) {
+      // console.log("Session callback", session, token, user);
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token?.id,
+        },
+      };
+      return session;
     },
   },
 };
