@@ -2,6 +2,11 @@ import axios from "axios";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+type ApiError = {
+  status?: number;
+  error?: string;
+};
+
 export const options: NextAuthOptions = {
   session: {
     strategy: "jwt",
@@ -41,14 +46,14 @@ export const options: NextAuthOptions = {
               },
             }
           );
-          console.log("response", response.data);
+          // console.log("response", response.data);
 
           if (response.status === 200) {
             return response.data;
           }
 
           return null;
-        } catch (err: any) {
+        } catch (err: ApiError | any) {
           console.error(err.response?.data);
 
           throw new Error(
@@ -64,6 +69,15 @@ export const options: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, session }) {
       // console.log("JWT callback", token, user, session);
+      console.log("JWT callback", user);
+      if (user) {
+        console.log("Yes!");
+        console.log(user.id);
+        return {
+          ...token,
+          id: user.id,
+        };
+      }
       return token;
     },
     async session({ session, token, user }) {
@@ -75,7 +89,6 @@ export const options: NextAuthOptions = {
           id: token?.id,
         },
       };
-      return session;
     },
   },
 };

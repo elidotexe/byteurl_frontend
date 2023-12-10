@@ -24,7 +24,7 @@ const FormSchema = z.object({
   confirmPassword: z.string().min(8, "Password is too short"),
 });
 
-const RegisterForm = (): JSX.Element => {
+const RegisterForm = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {

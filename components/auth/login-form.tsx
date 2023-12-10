@@ -49,16 +49,16 @@ const LoginForm = () => {
         return toast({
           title: "You have successfully logged in!",
         });
-      } else {
-        router.push("/login");
-        toast({
-          title: "Invalid credentials",
-          description: "Please try again",
-        });
       }
+
+      const errorObject = JSON.parse(response?.error ?? "{}");
+
+      return toast({
+        title: `${errorObject.error}!`,
+        description: "Please try again",
+      });
     } catch (err: any) {
       console.error(err);
-      router.push("/login");
       toast({
         title: "Something went wrong",
         description: "Please try again",
