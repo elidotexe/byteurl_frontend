@@ -40,3 +40,9 @@ export type SidebarNavItem = {
       items: NavLink[];
     }
 );
+
+export type User = {
+  name?: string;
+  email?: string;
+  id?: number;
+};

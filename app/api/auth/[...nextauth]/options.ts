@@ -20,6 +20,10 @@ export const options: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
+        name: {
+          type: "text",
+          placeholder: "Name",
+        },
         email: {
           type: "text",
           placeholder: "Email",
@@ -37,6 +41,7 @@ export const options: NextAuthOptions = {
           const response = await axios.post(
             `${process.env.NEXT_PUBLIC_API_URL}/api/${apiTail}`,
             {
+              name: credentials?.name,
               email: credentials?.email,
               password: credentials?.password,
             },
@@ -46,10 +51,10 @@ export const options: NextAuthOptions = {
               },
             }
           );
-          // console.log("response", response.data);
+          console.log("response", response.data.user);
 
           if (response.status === 200) {
-            return response.data;
+            return response.data.user;
           }
 
           return null;
@@ -68,25 +73,27 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, session }) {
-      // console.log("JWT callback", token, user, session);
-      console.log("JWT callback", user);
+      console.log("JWT callback", { token, user, session });
       if (user) {
-        console.log("Yes!");
-        console.log(user.id);
         return {
           ...token,
           id: user.id,
+          name: user.name,
+          email: user.email,
         };
       }
+
       return token;
     },
     async session({ session, token, user }) {
-      // console.log("Session callback", session, token, user);
+      console.log("Session callback", { session, token, user });
       return {
         ...session,
         user: {
           ...session.user,
           id: token?.id,
+          name: token?.name,
+          email: token?.email,
         },
       };
     },

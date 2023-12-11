@@ -1,23 +1,22 @@
 import { AvatarProps } from "@radix-ui/react-avatar";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User } from "@/types";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Icons } from "@/components/icons";
 
 interface UserAvatarProps extends AvatarProps {
-  user: Pick<any, "image" | "name">;
+  user?: Pick<User, "name">;
 }
 
 const UserAvatar = ({ user, ...props }: UserAvatarProps) => {
+  if (!user || !user.name) return null;
+
   return (
     <Avatar {...props}>
-      {user.image ? (
-        <AvatarImage alt="Picture" src={user.image} />
-      ) : (
-        <AvatarFallback>
-          <span className="sr-only">{user.name}</span>
-          <Icons.user className="h-4 w-4" />
-        </AvatarFallback>
-      )}
+      <AvatarFallback>
+        <span className="sr-only">{user.name}</span>
+        <Icons.user className="h-4 w-4" />
+      </AvatarFallback>
     </Avatar>
   );
 };

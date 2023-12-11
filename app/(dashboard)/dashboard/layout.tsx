@@ -9,7 +9,7 @@ interface DashboardLayoutProps {
   children?: React.ReactNode;
 }
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const user = { name: "John Doe", image: null, email: "example@website.com" };
 
   return (
@@ -33,4 +33,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <Footer className="border-t" />
     </div>
   );
-}
+};
+
+export default DashboardLayout;

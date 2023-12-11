@@ -19,6 +19,7 @@ import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
 
 const FormSchema = z.object({
+  name: z.string().min(3, "Name is too short"),
   email: z.string().min(5, "Email is too short").email("Email is invalid"),
   password: z.string().min(8, "Password is too short"),
   confirmPassword: z.string().min(8, "Password is too short"),
@@ -38,16 +39,16 @@ const RegisterForm = () => {
 
   const onSubmit = async (v: z.infer<typeof FormSchema>) => {
     if (v.password !== v.confirmPassword) {
-      toast({
+      return toast({
         title: "Passwords do not match!",
         description: "Please try again",
       });
-      return;
     }
 
     try {
       const response = await signIn("credentials", {
         redirect: false,
+        name: v.name,
         email: v.email,
         password: v.password,
       });
@@ -56,7 +57,6 @@ const RegisterForm = () => {
 
       if (response?.status === 200) {
         router.push("/dashboard");
-
         return toast({
           title: "You have successfully created an account!",
         });
@@ -65,7 +65,9 @@ const RegisterForm = () => {
       const errorObject = JSON.parse(response?.error ?? "{}");
 
       return toast({
-        title: `${errorObject.error}!`,
+        title: `${errorObject.error
+          .charAt(0)
+          .toUpperCase()}${errorObject.error.slice(1)}!`,
         description:
           errorObject.status === 409
             ? "Please try creating an account with a different email"
@@ -83,6 +85,27 @@ const RegisterForm = () => {
   return (
     <Form {...form}>
       <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem className="mb-3">
+              <FormControl>
+                <Input
+                  id="name"
+                  type="text"
+                  autoCapitalize="none"
+                  autoComplete="name"
+                  autoCorrect="off"
+                  placeholder="Name"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="email"

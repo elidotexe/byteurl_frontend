@@ -54,7 +54,9 @@ const LoginForm = () => {
       const errorObject = JSON.parse(response?.error ?? "{}");
 
       return toast({
-        title: `${errorObject.error}!`,
+        title: `${errorObject.error
+          .charAt(0)
+          .toUpperCase()}${errorObject.error.slice(1)}!`,
         description: "Please try again",
       });
     } catch (err: any) {
