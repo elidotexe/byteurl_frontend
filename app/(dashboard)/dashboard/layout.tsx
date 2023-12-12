@@ -1,3 +1,6 @@
+import { notFound } from "next/navigation";
+
+import getCurrentUser from "@/lib/session";
 import { dashboardConfig } from "@/config/dashboard";
 
 import Nav from "@/components/navigation/nav";
@@ -9,8 +12,10 @@ interface DashboardLayoutProps {
   children?: React.ReactNode;
 }
 
-const DashboardLayout = ({ children }: DashboardLayoutProps) => {
-  const user = { name: "John Doe", image: null, email: "example@website.com" };
+const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
+  const user = await getCurrentUser();
+
+  if (!user) return notFound();
 
   return (
     <div className="flex min-h-screen flex-col space-y-6">
@@ -18,7 +23,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <div className="container flex h-16 items-center justify-between py-4">
           <Nav items={dashboardConfig.mainNav} />
           <UserAccountNav
-            user={{ name: user.name, image: user.image, email: user.email }}
+            user={{
+              name: user?.name ?? "",
+              email: user?.email ?? "",
+            }}
           />
         </div>
       </header>

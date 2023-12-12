@@ -42,7 +42,7 @@ export type SidebarNavItem = {
 );
 
 export type User = {
-  name?: string;
+  name: string;
   email?: string;
   id?: number;
 };

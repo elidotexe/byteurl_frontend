@@ -5,12 +5,10 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Icons } from "@/components/icons";
 
 interface UserAvatarProps extends AvatarProps {
-  user?: Pick<User, "name">;
+  user: User;
 }
 
 const UserAvatar = ({ user, ...props }: UserAvatarProps) => {
-  if (!user || !user.name) return null;
-
   return (
     <Avatar {...props}>
       <AvatarFallback>

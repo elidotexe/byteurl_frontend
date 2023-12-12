@@ -7,7 +7,7 @@ type ApiError = {
   error?: string;
 };
 
-export const options: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
