@@ -39,7 +39,9 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
           className="cursor-pointer"
           onSelect={(e) => {
             e.preventDefault();
-            signOut();
+            signOut({
+              callbackUrl: "/",
+            });
           }}
         >
           Sign out

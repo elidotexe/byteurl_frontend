@@ -54,12 +54,14 @@ const LoginForm = () => {
           .charAt(0)
           .toUpperCase()}${errorObject.error.slice(1)}!`,
         description: "Please try again",
+        variant: "destructive",
       });
     } catch (err: any) {
       console.error(err);
       toast({
         title: "Something went wrong",
         description: "Please try again",
+        variant: "destructive",
       });
     }
   };

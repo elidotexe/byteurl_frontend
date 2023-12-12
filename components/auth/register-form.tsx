@@ -66,12 +66,14 @@ const RegisterForm = () => {
           errorObject.status === 409
             ? "Please try creating an account with a different email"
             : "Please try again",
+        variant: "destructive",
       });
     } catch (err: any) {
       console.error(err);
       return toast({
         title: "Something went wrong",
         description: "Please try again",
+        variant: "destructive",
       });
     }
   };
