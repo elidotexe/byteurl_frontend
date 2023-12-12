@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
@@ -15,11 +16,13 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/lib/validations/auth";
 
+import { toast } from "../ui/use-toast";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { toast } from "../ui/use-toast";
+import { Icons } from "../icons";
 
 const LoginForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -28,9 +31,11 @@ const LoginForm = () => {
     },
   });
 
-  const router = useRouter();
+  const [isSaving, setIsSaving] = React.useState<boolean>(false);
 
   const onSubmit = async (v: z.infer<typeof LoginSchema>) => {
+    setIsSaving(true);
+
     try {
       const response = await signIn("credentials", {
         redirect: false,
@@ -39,6 +44,8 @@ const LoginForm = () => {
       });
 
       console.log("response", response);
+
+      setIsSaving(false);
 
       if (response?.status === 200) {
         router.push("/dashboard");
@@ -108,8 +115,9 @@ const LoginForm = () => {
           )}
         />
 
-        <Button className="w-full" type="submit">
-          Sign In with Email
+        <Button className="w-full" type="submit" disabled={isSaving}>
+          {isSaving && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+          <span>Sign In with Email</span>
         </Button>
       </form>
     </Form>

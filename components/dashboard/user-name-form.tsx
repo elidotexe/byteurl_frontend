@@ -81,8 +81,8 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
         </CardContent>
         <CardFooter>
           <button
-            type="submit"
             className={cn(buttonVariants(), className)}
+            type="submit"
             disabled={isSaving}
           >
             {isSaving && (

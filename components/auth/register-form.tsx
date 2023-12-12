@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
@@ -15,27 +16,33 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "@/lib/validations/auth";
 
+import { toast } from "../ui/use-toast";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { toast } from "../ui/use-toast";
+import { Icons } from "../icons";
 
 const RegisterForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  const router = useRouter();
+  const [isSaving, setIsSaving] = React.useState<boolean>(false);
 
   const onSubmit = async (v: z.infer<typeof RegisterSchema>) => {
+    setIsSaving(true);
+
     if (v.password !== v.confirmPassword) {
       return toast({
         title: "Passwords do not match!",
         description: "Please try again",
+        variant: "destructive",
       });
     }
 
@@ -48,6 +55,8 @@ const RegisterForm = () => {
       });
 
       console.log("response:", response);
+
+      setIsSaving(false);
 
       if (response?.status === 200) {
         router.push("/dashboard");
@@ -160,7 +169,8 @@ const RegisterForm = () => {
         />
 
         <Button className="w-full" type="submit">
-          Sign In with Email
+          {isSaving && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+          <span>Sign In with Email</span>
         </Button>
       </form>
     </Form>
