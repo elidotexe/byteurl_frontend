@@ -24,8 +24,8 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
           <Nav items={dashboardConfig.mainNav} />
           <UserAccountNav
             user={{
-              name: user?.name ?? "",
-              email: user?.email ?? "",
+              name: user.name ?? "",
+              email: user.email ?? "",
             }}
           />
         </div>

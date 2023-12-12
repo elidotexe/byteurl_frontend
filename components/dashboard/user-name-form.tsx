@@ -1,11 +1,13 @@
 "use client";
 
+import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
+import { User } from "@/types";
 import { cn } from "@/lib/utils";
+
 import { userNameSchema } from "@/lib/validations/user";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -22,14 +24,36 @@ import { toast } from "@/components/ui/use-toast";
 
 import { Icons } from "@/components/icons";
 
+interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
+  user: User;
+}
+
 type FormData = z.infer<typeof userNameSchema>;
 
-const UserNameForm = () => {
+const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
+  const router = useRouter();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(userNameSchema),
+    defaultValues: {
+      name: user?.name || "",
+    },
+  });
+
+  const [isSaving, setIsSaving] = React.useState<boolean>(false);
+
+  const onSubmit = async (data: FormData) => {
+    setIsSaving(true);
+  };
+
   return (
     <form
       className={cn(className)}
       onSubmit={handleSubmit(onSubmit)}
-      // {...props}
+      {...props}
     >
       <Card>
         <CardHeader>

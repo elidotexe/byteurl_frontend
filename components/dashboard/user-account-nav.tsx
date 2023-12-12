@@ -21,15 +21,15 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <UserAvatar className="h-8 w-8" user={{ name: user?.name ?? "" }} />
+        <UserAvatar className="h-8 w-8" user={{ name: user.name ?? "" }} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
-            {user?.name && <p className="font-medium">{user?.name}</p>}
-            {user?.email && (
+            {user.name && <p className="font-medium">{user.name}</p>}
+            {user.email && (
               <p className="w-[200px] truncate text-sm text-muted-foreground">
-                {user?.email}
+                {user.email}
               </p>
             )}
           </div>

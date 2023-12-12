@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
               },
             }
           );
-          console.log("response", response.data.user);
+          // console.log("response", response.data.user);
 
           if (response.status === 200) {
             return response.data.user;
@@ -73,7 +73,7 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, session }) {
-      console.log("JWT callback", { token, user, session });
+      // console.log("JWT callback", { token, user, session });
       if (user) {
         return {
           ...token,
@@ -86,7 +86,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token, user }) {
-      console.log("Session callback", { session, token, user });
+      // console.log("Session callback", { session, token, user });
       return {
         ...session,
         user: {

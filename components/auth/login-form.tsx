@@ -13,19 +13,15 @@ import {
 } from "../ui/form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginSchema } from "@/lib/validations/auth";
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
 
-const FormSchema = z.object({
-  email: z.string().min(5, "Email is too short").email("Email is invalid"),
-  password: z.string().min(8, "Password is too short"),
-});
-
 const LoginForm = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -34,7 +30,7 @@ const LoginForm = () => {
 
   const router = useRouter();
 
-  const onSubmit = async (v: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (v: z.infer<typeof LoginSchema>) => {
     try {
       const response = await signIn("credentials", {
         redirect: false,

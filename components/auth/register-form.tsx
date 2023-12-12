@@ -13,21 +13,15 @@ import {
 } from "../ui/form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RegisterSchema } from "@/lib/validations/auth";
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
 
-const FormSchema = z.object({
-  name: z.string().min(3, "Name is too short"),
-  email: z.string().min(5, "Email is too short").email("Email is invalid"),
-  password: z.string().min(8, "Password is too short"),
-  confirmPassword: z.string().min(8, "Password is too short"),
-});
-
 const RegisterForm = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -37,7 +31,7 @@ const RegisterForm = () => {
 
   const router = useRouter();
 
-  const onSubmit = async (v: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (v: z.infer<typeof RegisterSchema>) => {
     if (v.password !== v.confirmPassword) {
       return toast({
         title: "Passwords do not match!",

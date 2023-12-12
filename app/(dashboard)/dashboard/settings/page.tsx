@@ -1,7 +1,10 @@
+import { notFound } from "next/navigation";
+
 import getCurrentUser from "@/lib/session";
 
 import { DashboardShell } from "@/components/dashboard/shell";
 import DashboardHeader from "@/components/dashboard/header";
+import UserNameForm from "@/components/dashboard/user-name-form";
 
 export const metadata = {
   title: "Settings",
@@ -11,12 +14,7 @@ export const metadata = {
 const SettingsPage = async () => {
   const user = await getCurrentUser();
 
-  console.log("hello world");
-  console.log(user?.email);
-
-  if (!user) {
-    console.log("no user");
-  }
+  if (!user) return notFound();
 
   return (
     <DashboardShell>
@@ -24,11 +22,11 @@ const SettingsPage = async () => {
         heading="Settings"
         text="Manage account and website settings."
       />
-      <div className="grid gap-10">{user?.email}</div>
+      <div className="grid gap-10">
+        <UserNameForm user={{ name: user.name, id: user.id }} />
+      </div>
     </DashboardShell>
   );
 };
-
-// <UserNameForm user={{ id: user.id, name: user.name || "" }} />
 
 export default SettingsPage;
