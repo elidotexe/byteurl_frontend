@@ -80,6 +80,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
+          access_token: user.access_token,
         };
       }
 
@@ -94,6 +95,7 @@ export const authOptions: NextAuthOptions = {
           id: token?.id,
           name: token?.name,
           email: token?.email,
+          access_token: token?.access_token,
         },
       };
     },
