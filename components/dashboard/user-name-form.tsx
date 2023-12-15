@@ -4,9 +4,10 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import * as z from "zod";
-import { User } from "@/types";
 import { cn } from "@/lib/utils";
+import { User } from "@/types";
 
 import { userNameSchema } from "@/lib/validations/user";
 import { buttonVariants } from "@/components/ui/button";
@@ -23,6 +24,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 
 import { Icons } from "@/components/icons";
+import { updateUsername } from "@/app/api/users";
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
@@ -32,9 +34,15 @@ type FormData = z.infer<typeof userNameSchema>;
 
 const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
   const router = useRouter();
+  const { data: session, update } = useSession();
+
+  console.log(session?.user.access_token);
+
   const {
     handleSubmit,
     register,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(userNameSchema),
@@ -47,6 +55,49 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
 
   const onSubmit = async (data: FormData) => {
     setIsSaving(true);
+
+    if (user?.id === undefined || session?.user.access_token === undefined) {
+      setIsSaving(false);
+
+      return toast({
+        title: "User is not defined.",
+        variant: "destructive",
+      });
+    }
+
+    try {
+      const response = await updateUsername(
+        user.id,
+        data.name,
+        session?.user.access_token
+      );
+
+      setIsSaving(false);
+
+      if (response.status === 200) {
+        toast({
+          description: "Your name has been updated.",
+        });
+
+        router.refresh();
+        return;
+      }
+
+      return toast({
+        title: "Your name was not updated. Please try again.",
+        variant: "destructive",
+      });
+    } catch (err: any) {
+      setIsSaving(false);
+      console.error(err);
+      return toast({
+        title: `${err.response?.data?.message
+          ?.charAt(0)
+          ?.toUpperCase()}${err.response?.data?.message?.slice(1)}!`,
+        description: "Your name was not updated. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -69,10 +120,14 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
               Name
             </Label>
             <Input
-              id="name"
               className="w-[400px]"
+              type="text"
+              id="name"
               size={32}
               {...register("name")}
+              onChange={(e) => {
+                setValue("name", e.target.value);
+              }}
             />
             {errors?.name && (
               <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
@@ -84,6 +139,10 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
             className={cn(buttonVariants(), className)}
             type="submit"
             disabled={isSaving}
+            onClick={() => {
+              const { name } = getValues();
+              update({ name });
+            }}
           >
             {isSaving && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
