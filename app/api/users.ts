@@ -9,8 +9,6 @@ export const updateUsername = async (
   name: string,
   accessToken: string
 ) => {
-  console.log("accessToken", accessToken);
-
   const response = await usersApi.patch(
     `${userId}`,
     {

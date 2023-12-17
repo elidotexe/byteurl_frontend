@@ -4,7 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { User } from "@/types";
@@ -35,8 +35,6 @@ type FormData = z.infer<typeof userNameSchema>;
 const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
   const router = useRouter();
   const { data: session, update } = useSession();
-
-  console.log(session?.user.access_token);
 
   const {
     handleSubmit,
@@ -89,7 +87,18 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
       });
     } catch (err: any) {
       setIsSaving(false);
-      console.error(err);
+
+      if (err.response?.status === 401) {
+        await signOut({
+          callbackUrl: "/login",
+        });
+
+        return toast({
+          title: "You are not authorized to perform this action.",
+          variant: "destructive",
+        });
+      }
+
       return toast({
         title: `${err.response?.data?.message
           ?.charAt(0)
