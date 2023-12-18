@@ -1,10 +1,6 @@
-import Link from "next/link";
-
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import getCurrentUser from "@/lib/session";
 
 import { DashboardShell } from "@/components/dashboard/shell";
-import { Icons } from "@/components/icons";
 import DashboardHeader from "@/components/dashboard/header";
 import LinkForm from "@/components/dashboard/link-form";
 
@@ -12,19 +8,18 @@ interface EditorPageProps {
   params: { linkId: number };
 }
 
-const EditorPage = ({ params }: EditorPageProps) => {
+const EditorPage = async ({ params }: EditorPageProps) => {
+  const user = await getCurrentUser();
+
   return (
     <DashboardShell>
-      <DashboardHeader heading="Create or edit link">
-        <Link
-          className={cn(buttonVariants({ variant: "ghost" }), "")}
-          href="/dashboard"
-        >
-          <Icons.chevronLeft className="mr-2 h-4 w-4" />
-          <>Back</>
-        </Link>
-      </DashboardHeader>
-      <LinkForm />
+      <DashboardHeader
+        heading="Link creation"
+        text="Create a new link or edit an existing one."
+      />
+      <div className="grid gap-10">
+        <LinkForm user={user} />
+      </div>
     </DashboardShell>
   );
 };

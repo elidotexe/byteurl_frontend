@@ -47,3 +47,12 @@ export type User = {
   id?: number;
   access_token?: string;
 };
+
+export type Link = {
+  id: number;
+  title: string;
+  originalUrl: string;
+  shortUrl: string;
+  clicks: number;
+  createdAt: string;
+};

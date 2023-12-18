@@ -15,11 +15,10 @@ import {
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/lib/validations/auth";
-
-import { toast } from "../ui/use-toast";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Icons } from "../icons";
+import { toast } from "../ui/use-toast";
 
 const LoginForm = () => {
   const router = useRouter();

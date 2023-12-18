@@ -1,10 +1,11 @@
 import Link from "next/link";
 
 import { formatDate } from "@/lib/utils";
+import { Link as LinkType } from "@/types";
 import LinkOperations from "./link-operations";
 
 interface LinkItemProps {
-  link: any;
+  link: LinkType;
 }
 
 const LinkItem = ({ link }: LinkItemProps) => {
@@ -19,7 +20,7 @@ const LinkItem = ({ link }: LinkItemProps) => {
         </Link>
         <div>
           <p className="text-sm text-muted-foreground">
-            {formatDate(link.createdAt?.toDateString())}
+            {formatDate(link.createdAt)}
           </p>
         </div>
       </div>
@@ -27,5 +28,6 @@ const LinkItem = ({ link }: LinkItemProps) => {
     </div>
   );
 };
+// {formatDate(link.createdAt?.toDateString())}
 
 export default LinkItem;

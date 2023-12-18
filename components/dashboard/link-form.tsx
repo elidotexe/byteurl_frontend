@@ -1,92 +1,141 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import * as React from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { signOut, useSession } from "next-auth/react";
 import * as z from "zod";
+import { cn } from "@/lib/utils";
+import { User } from "@/types";
 
-import { Button } from "@/components/ui/button";
+import { linkSchema } from "@/lib/validations/link";
+import { buttonVariants } from "@/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 
-const FormSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters.",
-  }),
-  link: z.string().min(2, {
-    message: "Link must be at least 2 characters.",
-  }),
-});
+import { Icons } from "@/components/icons";
 
-const LinkForm = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
+  user: User;
+}
+
+type FormData = z.infer<typeof linkSchema>;
+
+const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
+  const router = useRouter();
+
+  const { data: session, update } = useSession();
+
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(linkSchema),
     defaultValues: {
       title: "",
-      link: "",
+      originalUrl: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
+  const [isSaving, setIsSaving] = React.useState<boolean>(false);
+
+  const onSubmit = async (data: FormData) => {};
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-3/3 lg:w-2/3 space-y-6"
-      >
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder="ByteURL" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <form
+      className={cn(className)}
+      onSubmit={handleSubmit(onSubmit)}
+      {...props}
+    >
+      <Card>
+        <CardHeader>
+          <CardTitle>Title</CardTitle>
+          <CardDescription>
+            Enter your title that you wish to be displayed.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="title">
+              Title
+            </Label>
+            <Input
+              className="w-[400px]"
+              type="text"
+              id="title"
+              size={32}
+              placeholder="Title"
+              {...register("title")}
+              onChange={(e) => {
+                setValue("title", e.target.value);
+              }}
+            />
+            {errors?.title && (
+              <p className="px-1 text-xs text-red-600">
+                {errors.title.message}
+              </p>
+            )}
+          </div>
+        </CardContent>
 
-        <FormField
-          control={form.control}
-          name="link"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Link</FormLabel>
-              <FormControl>
-                <Input placeholder="https://byteurl.io/" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <CardHeader>
+          <CardTitle>Link</CardTitle>
+          <CardDescription>
+            Enter your link that you wish to be shortened.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="originalUrl">
+              Link
+            </Label>
+            <Input
+              className="w-[400px]"
+              type="text"
+              id="originalUrl"
+              size={32}
+              placeholder="https://example.com"
+              {...register("originalUrl")}
+              onChange={(e) => {
+                setValue("originalUrl", e.target.value);
+              }}
+            />
+            {errors?.title && (
+              <p className="px-1 text-xs text-red-600">
+                {errors.originalUrl?.message}
+              </p>
+            )}
+          </div>
+        </CardContent>
 
-        <Button className={cn(buttonVariants())} type="submit">
-          Submit
-        </Button>
-      </form>
-    </Form>
+        <CardFooter>
+          <button
+            className={cn(buttonVariants(), className)}
+            type="submit"
+            disabled={isSaving}
+          >
+            {isSaving && (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            <span>Save</span>
+          </button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 };
 
-export default LinkForm;
+export default UserNameForm;
