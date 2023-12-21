@@ -48,11 +48,12 @@ export type User = {
   access_token?: string;
 };
 
-export type Link = {
+export type LinkTypes = {
   id: number;
   title: string;
   originalUrl: string;
-  shortUrl: string;
-  clicks: number;
-  createdAt: string;
+  shortUrl?: string;
+  clicks?: number;
+  createdAt?: string;
+  updatedAt?: string;
 };

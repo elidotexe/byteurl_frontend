@@ -1,24 +1,32 @@
 import axios from "axios";
 
-const linksApi = axios.create({
-  baseURL: "http://localhost:3500",
+// `${process.env.NEXT_PUBLIC_API_URL}/api/users/${user.id}/links`
+
+const linkApi = axios.create({
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/users/`,
 });
 
-export const getLinks = async () => {
-  const response = await linksApi.get("/links");
+export const getAllLinks = async (userId: number, accessToken: string) => {
+  const response = await linkApi.get(`${userId}/links`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
   return response.data;
 };
 
 export const addLink = async (link: any) => {
-  return await linksApi.post("/links", link);
+  return await linkApi.post("/links", link);
 };
 
 export const updateLink = async (link: any) => {
-  return await linksApi.put(`/links/${link.id}`, link);
+  return await linkApi.put(`/links/${link.id}`, link);
 };
 
 export const deleteLink = async ({ id }: any) => {
-  return await linksApi.delete(`/links/${id}`, id);
+  return await linkApi.delete(`/links/${id}`, id);
 };
 
-export default linksApi;
+export default linkApi;

@@ -23,7 +23,7 @@ const DashboardPage = async () => {
           New link
         </Link>
       </DashboardHeader>
-      <LinkList />
+      <LinkList user={user} />
     </DashboardShell>
   );
 };

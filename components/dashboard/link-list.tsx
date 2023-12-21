@@ -1,27 +1,41 @@
 "use client";
 
+import React, { useEffect } from "react";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
-import { getLinks } from "@/app/api/links";
+import { getAllLinks } from "@/app/api/links";
 
 import { Button } from "@/components/ui/button";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
-import LinkItem from "@/components/dashboard/link-item";
 import { Icons } from "@/components/icons";
+import { LinkTypes, User } from "@/types";
+import LinkItem from "@/components/dashboard/link-item";
 
-const LinkList = () => {
-  const {
-    isLoading,
-    isError,
-    error,
-    data: links,
-  } = useQuery({
-    queryKey: ["links"],
-    queryFn: getLinks,
-  });
+interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
+  user: User;
+}
 
-  console.log({ links });
+const LinkList = ({ user }: UserLinksProps) => {
+  const router = useRouter();
+
+  const [links, setLinks] = React.useState<LinkTypes[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      if (user.id === undefined || user.access_token === undefined) {
+        return;
+      }
+
+      try {
+        const response = await getAllLinks(user?.id, user.access_token);
+        console.log(response);
+        setLinks(response);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [user]);
 
   return (
     <>
