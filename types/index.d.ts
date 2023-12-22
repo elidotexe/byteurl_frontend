@@ -42,18 +42,18 @@ export type SidebarNavItem = {
 );
 
 export type User = {
-  name?: string;
-  email?: string;
-  id?: number;
-  access_token?: string;
+  name: string;
+  email: string;
+  id: number;
+  token: string;
 };
 
-export type LinkTypes = {
+export type LinkType = {
   id: number;
   title: string;
   originalUrl: string;
-  shortUrl?: string;
+  shortenUrl?: string;
   clicks?: number;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
 };

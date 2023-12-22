@@ -54,7 +54,7 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
   const onSubmit = async (data: FormData) => {
     setIsSaving(true);
 
-    if (user?.id === undefined || session?.user.access_token === undefined) {
+    if (session?.user.token === undefined) {
       setIsSaving(false);
 
       return toast({
@@ -67,7 +67,7 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
       const response = await updateUsername(
         user.id,
         data.name,
-        session?.user.access_token
+        session.user.token
       );
 
       setIsSaving(false);

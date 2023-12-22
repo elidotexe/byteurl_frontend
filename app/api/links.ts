@@ -6,11 +6,11 @@ const linkApi = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/users/`,
 });
 
-export const getAllLinks = async (userId: number, accessToken: string) => {
+export const getAllLinks = async (userId: number, token: string) => {
   const response = await linkApi.get(`${userId}/links`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 

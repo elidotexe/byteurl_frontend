@@ -15,7 +15,7 @@ const EditorPage = async ({ params }: EditorPageProps) => {
     <DashboardShell>
       <DashboardHeader
         heading="Link creation"
-        text="Create a neit an existing one."
+        text="Create a new link or edit an existing one."
       />
       <div className="grid gap-10">
         <LinkForm user={user} />

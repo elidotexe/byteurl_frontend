@@ -2,14 +2,13 @@
 
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 import { getAllLinks } from "@/app/api/links";
 
+import { User, LinkType } from "@/types";
 import { Button } from "@/components/ui/button";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import { Icons } from "@/components/icons";
-import { LinkTypes, User } from "@/types";
 import LinkItem from "@/components/dashboard/link-item";
 
 interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
@@ -17,31 +16,40 @@ interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
 }
 
 const LinkList = ({ user }: UserLinksProps) => {
-  const router = useRouter();
-
-  const [links, setLinks] = React.useState<LinkTypes[]>([]);
+  const [links, setLinks] = React.useState<LinkType[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
 
   useEffect(() => {
     (async () => {
-      if (user.id === undefined || user.access_token === undefined) {
-        return;
-      }
-
       try {
-        const response = await getAllLinks(user?.id, user.access_token);
+        const response = await getAllLinks(user.id, user.token);
         console.log(response);
         setLinks(response);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     })();
-  }, [user]);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="divide-border-200 divide-y rounded-md border">
+        <LinkItem.Skeleton />
+        <LinkItem.Skeleton />
+        <LinkItem.Skeleton />
+        <LinkItem.Skeleton />
+        <LinkItem.Skeleton />
+      </div>
+    );
+  }
 
   return (
     <>
       {links?.length ? (
         <div className="divide-y divide-border rounded-md border">
-          {links.map((link: any) => (
+          {links.map((link: LinkType) => (
             <LinkItem key={link.id} link={link} />
           ))}
         </div>

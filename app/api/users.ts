@@ -7,7 +7,7 @@ const usersApi = axios.create({
 export const updateUsername = async (
   userId: number,
   name: string,
-  accessToken: string
+  token: string
 ) => {
   const response = await usersApi.patch(
     `${userId}`,
@@ -17,7 +17,7 @@ export const updateUsername = async (
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
       },
     }
   );
