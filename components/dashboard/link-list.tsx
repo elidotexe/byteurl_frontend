@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import { Icons } from "@/components/icons";
 import LinkItem from "@/components/dashboard/link-item";
+import { LinkItemTest } from "./link-item-test";
 
 interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
@@ -45,14 +46,17 @@ const LinkList = ({ user }: UserLinksProps) => {
     );
   }
 
+  // <div className="divide-y divide-border rounded-md border">
+  //   {links.map((link: LinkType) => (
+  //     <LinkItem key={link.id} link={link} />
+  //   ))}
+  // </div>
   return (
     <>
       {links?.length ? (
-        <div className="divide-y divide-border rounded-md border">
-          {links.map((link: LinkType) => (
-            <LinkItem key={link.id} link={link} />
-          ))}
-        </div>
+        <>
+          <LinkItemTest links={links} />
+        </>
       ) : (
         <EmptyPlaceholder>
           <EmptyPlaceholder.Icon name="link" />
