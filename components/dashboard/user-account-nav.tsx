@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { signOut } from "next-auth/react";
 import { User } from "@/types";
 
@@ -34,6 +36,16 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
             )}
           </div>
         </div>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard">Dashboard</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/analytics">Analytics</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/settings">Settings</Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer"
