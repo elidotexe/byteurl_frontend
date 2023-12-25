@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 
 import { getAllLinks } from "@/app/api/links";
+import { tableColumns } from "./table-columns";
 
 import { User, LinkType } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -24,7 +25,6 @@ const LinkList = ({ user }: UserLinksProps) => {
     (async () => {
       try {
         const response = await getAllLinks(user.id, user.token);
-        console.log(response);
         setLinks(response);
       } catch (err) {
         console.error(err);
@@ -46,16 +46,11 @@ const LinkList = ({ user }: UserLinksProps) => {
     );
   }
 
-  // <div className="divide-y divide-border rounded-md border">
-  //   {links.map((link: LinkType) => (
-  //     <LinkItem key={link.id} link={link} />
-  //   ))}
-  // </div>
   return (
     <>
       {links?.length ? (
         <>
-          <LinkItemTest links={links} />
+          <LinkItemTest links={links} columns={tableColumns} />
         </>
       ) : (
         <EmptyPlaceholder>
