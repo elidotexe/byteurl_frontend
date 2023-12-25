@@ -52,8 +52,8 @@ export type LinkType = {
   id: number;
   title: string;
   originalUrl: string;
-  shortenUrl?: string;
-  clicks?: number;
-  createdAt: string;
+  shortenUrl: string;
+  clicks: number;
+  createdAt?: string;
   updatedAt: string;
 };

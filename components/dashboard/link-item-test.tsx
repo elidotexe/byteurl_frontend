@@ -36,48 +36,61 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { LinkType } from "@/types";
+import { formatDate } from "@/lib/utils";
 
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-];
+// const data: Payment[] = [
+//   {
+//     id: 1,
+//     title: "ken99@yahoo.com",
+//     originalUrl: "https://www.google.com",
+//     shortenUrl: "https://byteurl.co",
+//     clicks: 0,
+//     updatedAt: "2021-09-01T00:00:00.000Z",
+//   },
+//   {
+//     id: 2,
+//     title: "Abe45@gmail.com",
+//     originalUrl: "https://www.google.com",
+//     shortenUrl: "https://byteurl.co",
+//     clicks: 242,
+//     updatedAt: "2021-09-01T00:00:00.000Z",
+//   },
+//   {
+//     id: 3,
+//     title: "Monserrat44@gmail.com",
+//     originalUrl: "https://www.google.com",
+//     shortenUrl: "https://byteurl.co",
+//     clicks: 837,
+//     updatedAt: "2020-09-01T00:00:00.000Z",
+//   },
+//   {
+//     id: 4,
+//     title: "Silas22@gmail.com",
+//     originalUrl: "https://www.google.com",
+//     shortenUrl: "https://byteurl.co",
+//     clicks: 874,
+//     updatedAt: "2023-09-01T00:00:00.000Z",
+//   },
+//   {
+//     id: 5,
+//     title: "carmella@hotmail.com",
+//     originalUrl: "https://www.google.com",
+//     shortenUrl: "https://byteurl.co",
+//     clicks: 721,
+//     updatedAt: "2022-09-01T00:00:00.000Z",
+//   },
+// ];
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
+// export type Payment = {
+//   id: number;
+//   title: string;
+//   originalUrl: string;
+//   shortenUrl: string;
+//   clicks: number;
+//   updatedAt: string;
+// };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<LinkType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -101,40 +114,81 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
-  },
-  {
-    accessorKey: "email",
+    accessorKey: "title",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Title
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => {
+      const formatedTitle = row.getValue("title") || "Untitled";
+      return <div className="lowercase">{formatedTitle}</div>;
+    },
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    accessorKey: "originalUrl",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Original URL
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("originalUrl")}</div>
+    ),
+  },
+  {
+    accessorKey: "shortenUrl",
+    header: () => <div className="font-medium">Shorten URL</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("shortenUrl")}</div>
+    ),
+  },
+  {
+    accessorKey: "clicks",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Clicks
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
+      const clicks = parseFloat(row.getValue("clicks"));
+      return <div className="text-center font-medium">{clicks}</div>;
+    },
+  },
+  {
+    accessorKey: "updatedAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Updated at
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatedDate = formatDate(row.getValue("updatedAt"));
+      return <div className="text-center lowercase">{formatedDate}</div>;
     },
   },
   {
@@ -154,13 +208,15 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() =>
+                navigator.clipboard.writeText(payment.id.toString())
+              }
             >
-              Copy payment ID
+              Copy link
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>Update</DropdownMenuItem>
+            <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -182,7 +238,7 @@ export function LinkItemTest({ links }: LinkItemsProps) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data,
+    data: links,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -204,10 +260,10 @@ export function LinkItemTest({ links }: LinkItemsProps) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter by title..."
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

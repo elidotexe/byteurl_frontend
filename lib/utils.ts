@@ -9,7 +9,7 @@ export function formatDate(input: string | number): string {
   const date = new Date(input);
   return date.toLocaleDateString("en-GB", {
     day: "numeric",
-    month: "long",
+    month: "numeric",
     year: "numeric",
   });
 }
