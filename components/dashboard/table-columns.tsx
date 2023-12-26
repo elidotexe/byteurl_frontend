@@ -28,6 +28,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "../ui/use-toast";
+import Link from "next/link";
 
 export const tableColumns: ColumnDef<LinkType>[] = [
   {
@@ -83,14 +84,26 @@ export const tableColumns: ColumnDef<LinkType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("originalUrl")}</div>
+      <Link
+        className="lowercase"
+        href={row.getValue("originalUrl")}
+        target="_blank"
+      >
+        {row.getValue("originalUrl")}
+      </Link>
     ),
   },
   {
     accessorKey: "shortenUrl",
     header: () => <div className="font-medium">Shorten URL</div>,
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("shortenUrl")}</div>
+      <Link
+        className="lowercase"
+        href={row.getValue("shortenUrl")}
+        target="_blank"
+      >
+        {row.getValue("shortenUrl")}
+      </Link>
     ),
   },
   {

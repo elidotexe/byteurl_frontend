@@ -5,13 +5,12 @@ import Link from "next/link";
 
 import { getAllLinks } from "@/app/api/links";
 import { tableColumns } from "./table-columns";
-
 import { User, LinkType } from "@/types";
+
 import { Button } from "@/components/ui/button";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import { Icons } from "@/components/icons";
 import LinkItem from "@/components/dashboard/link-item";
-import { LinkItemTest } from "./link-item-test";
 
 interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
@@ -50,7 +49,7 @@ const LinkList = ({ user }: UserLinksProps) => {
     <>
       {links?.length ? (
         <>
-          <LinkItemTest links={links} columns={tableColumns} />
+          <LinkItem links={links} columns={tableColumns} />
         </>
       ) : (
         <EmptyPlaceholder>
