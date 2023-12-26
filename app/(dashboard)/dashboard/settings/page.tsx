@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import getCurrentUser from "@/lib/session";
 
-import { DashboardShell } from "@/components/dashboard/shell";
+import DashboardShell from "@/components/dashboard/shell";
 import DashboardHeader from "@/components/dashboard/header";
 import UserNameForm from "@/components/dashboard/user-name-form";
 

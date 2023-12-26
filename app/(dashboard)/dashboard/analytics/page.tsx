@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 import { Icons } from "@/components/icons";
-import { DashboardShell } from "@/components/dashboard/shell";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import { Button } from "@/components/ui/button";
+import DashboardShell from "@/components/dashboard/shell";
 import DashboardHeader from "@/components/dashboard/header";
 
 const AnalyticsPage = () => {

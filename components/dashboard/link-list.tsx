@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import { Icons } from "@/components/icons";
 import LinkItem from "@/components/dashboard/link-item";
+import ItemSkeleton from "./item-skeleton";
 
 interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
@@ -33,17 +34,7 @@ const LinkList = ({ user }: UserLinksProps) => {
     })();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="divide-border-200 divide-y rounded-md border">
-        <LinkItem.Skeleton />
-        <LinkItem.Skeleton />
-        <LinkItem.Skeleton />
-        <LinkItem.Skeleton />
-        <LinkItem.Skeleton />
-      </div>
-    );
-  }
+  if (loading) return <ItemSkeleton />;
 
   return (
     <>

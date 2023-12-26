@@ -39,7 +39,7 @@ interface LinkItemsProps {
   columns: ColumnDef<LinkType>[];
 }
 
-export default function LinkItem({ links, columns }: LinkItemsProps) {
+const LinkItem = ({ links, columns }: LinkItemsProps) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -185,4 +185,6 @@ export default function LinkItem({ links, columns }: LinkItemsProps) {
       </div>
     </div>
   );
-}
+};
+
+export default LinkItem;

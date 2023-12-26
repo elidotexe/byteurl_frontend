@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 import getCurrentUser from "@/lib/session";
 
 import { buttonVariants } from "@/components/ui/button";
-import { DashboardShell } from "@/components/dashboard/shell";
 import { Icons } from "@/components/icons";
+import DashboardShell from "@/components/dashboard/shell";
 import DashboardHeader from "@/components/dashboard/header";
 import LinkList from "@/components/dashboard/link-list";
 

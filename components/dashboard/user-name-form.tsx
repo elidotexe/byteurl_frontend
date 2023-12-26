@@ -9,6 +9,7 @@ import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { User } from "@/types";
 
+import { updateUsername } from "@/app/api/users";
 import { userNameSchema } from "@/lib/validations/user";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -24,7 +25,6 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 
 import { Icons } from "@/components/icons";
-import { updateUsername } from "@/app/api/users";
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
