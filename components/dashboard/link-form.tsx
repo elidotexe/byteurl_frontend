@@ -4,12 +4,12 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { signOut, useSession } from "next-auth/react";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { User } from "@/types";
 
 import { linkSchema } from "@/lib/validations/link";
+import { createLink } from "@/app/api/links";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -34,13 +34,10 @@ type FormData = z.infer<typeof linkSchema>;
 const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
   const router = useRouter();
 
-  const { data: session, update } = useSession();
-
   const {
     handleSubmit,
     register,
     setValue,
-    getValues,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(linkSchema),
@@ -52,7 +49,44 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
 
   const [isSaving, setIsSaving] = React.useState<boolean>(false);
 
-  const onSubmit = async (data: FormData) => {};
+  const onSubmit = async (data: FormData) => {
+    setIsSaving(true);
+
+    const createLinkData = {
+      title: data.title,
+      originalUrl: data.originalUrl,
+      userId: user.id,
+      token: user.token,
+    };
+
+    try {
+      const response = await createLink(createLinkData);
+
+      setIsSaving(false);
+
+      if (response.status === 200) {
+        toast({
+          title: "Link successfully created!",
+        });
+
+        router.push("/dashboard");
+        return;
+      }
+
+      return toast({
+        title: "Something went wrong!",
+        description: "Please try again later.",
+      });
+    } catch (err) {
+      console.error(err);
+      setIsSaving(false);
+
+      return toast({
+        title: "Something went wrong!",
+        description: "Please try again later.",
+      });
+    }
+  };
 
   return (
     <form
@@ -113,7 +147,7 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
                 setValue("originalUrl", e.target.value);
               }}
             />
-            {errors?.title && (
+            {errors?.originalUrl && (
               <p className="px-1 text-xs text-red-600">
                 {errors.originalUrl?.message}
               </p>

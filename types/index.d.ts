@@ -57,3 +57,10 @@ export type LinkType = {
   createdAt?: string;
   updatedAt: string;
 };
+
+export type CreateLinkData = {
+  title: string;
+  originalUrl: string;
+  userId: number;
+  token: string;
+};

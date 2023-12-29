@@ -33,8 +33,9 @@ interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
 type FormData = z.infer<typeof userNameSchema>;
 
 const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
-  const router = useRouter();
   const { data: session, update } = useSession();
+
+  const router = useRouter();
 
   const {
     handleSubmit,
@@ -86,6 +87,7 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
         variant: "destructive",
       });
     } catch (err: any) {
+      console.error(err);
       setIsSaving(false);
 
       if (err.response?.status === 401) {
