@@ -37,6 +37,7 @@ import { Button } from "@/components/ui/button";
 interface LinkItemsProps {
   links: LinkType[];
   columns: ColumnDef<LinkType>[];
+  token: string;
 }
 
 const LinkItem = ({ links, columns }: LinkItemsProps) => {

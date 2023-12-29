@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CreateLinkData } from "@/types";
+import { CreateLinkTypeData } from "@/types";
 
 const linkApi = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/admin/users/`,
@@ -16,11 +16,11 @@ export const getAllLinks = async (userId: number, token: string) => {
   return response.data;
 };
 
-export const createLink = async (createLinkData: CreateLinkData) => {
+export const createLink = async (createLinkData: CreateLinkTypeData) => {
   const { title, originalUrl, userId, token } = createLinkData;
 
-  const response = await axios.put(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/admin/users/${userId}/links/0`,
+  const response = await linkApi.put(
+    `${userId}/links/0`,
     {
       title,
       originalUrl,
@@ -40,8 +40,17 @@ export const updateLink = async (link: any) => {
   return await linkApi.put(`/links/${link.id}`, link);
 };
 
-export const deleteLink = async ({ id }: any) => {
-  return await linkApi.delete(`/links/${id}`, id);
+export const deleteLink = async (
+  userId: number,
+  linkId: number,
+  token: string
+) => {
+  return await linkApi.delete(`${userId}/links/${linkId}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export default linkApi;

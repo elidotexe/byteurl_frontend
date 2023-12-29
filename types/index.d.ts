@@ -56,9 +56,11 @@ export type LinkType = {
   clicks: number;
   createdAt?: string;
   updatedAt: string;
+  userId?: number;
+  token?: string;
 };
 
-export type CreateLinkData = {
+export type CreateLinkTypeData = {
   title: string;
   originalUrl: string;
   userId: number;

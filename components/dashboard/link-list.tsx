@@ -36,11 +36,16 @@ const LinkList = ({ user }: UserLinksProps) => {
 
   if (loading) return <ItemSkeleton />;
 
+  const linksWithExtraParam = links.map((link: LinkType) => ({
+    ...link,
+    token: user.token,
+  }));
+
   return (
     <>
       {links?.length ? (
         <>
-          <LinkItem links={links} columns={tableColumns} />
+          <LinkItem links={linksWithExtraParam} columns={tableColumns} />
         </>
       ) : (
         <EmptyPlaceholder>

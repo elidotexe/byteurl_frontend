@@ -1,3 +1,4 @@
+import Link from "next/link";
 import * as React from "react";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -28,7 +29,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "../ui/use-toast";
-import Link from "next/link";
+import { deleteLink } from "@/app/api/links";
+import { useRouter } from "next/navigation";
 
 export const tableColumns: ColumnDef<LinkType>[] = [
   {
@@ -142,12 +144,57 @@ export const tableColumns: ColumnDef<LinkType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
+      const router = useRouter();
+
       const links = row.original;
 
       const [showDeleteAlert, setShowDeleteAlert] =
         React.useState<boolean>(false);
       const [isDeleteLoading, setIsDeleteLoading] =
         React.useState<boolean>(false);
+
+      const handleDeleteLink = async (e: any) => {
+        e.preventDefault();
+
+        setIsDeleteLoading(true);
+
+        if (links?.token === undefined || links?.userId === undefined) {
+          setShowDeleteAlert(false);
+          setIsDeleteLoading(false);
+          return;
+        }
+
+        try {
+          const response = await deleteLink(
+            links.userId,
+            links.id,
+            links?.token
+          );
+          setIsDeleteLoading(false);
+          setShowDeleteAlert(false);
+
+          if (response.status === 200) {
+            router.prefetch("/dashboard");
+            return toast({
+              title: response.data,
+            });
+          }
+
+          return toast({
+            title: "Something went wrong!",
+            variant: "destructive",
+          });
+        } catch (err) {
+          console.error(err);
+          setIsDeleteLoading(false);
+          setShowDeleteAlert(false);
+
+          return toast({
+            title: "Something went wrong!",
+            variant: "destructive",
+          });
+        }
+      };
 
       return (
         <div className="flex">
@@ -200,12 +247,7 @@ export const tableColumns: ColumnDef<LinkType>[] = [
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   className="bg-red-600 focus:ring-red-600"
-                  onClick={async (event) => {
-                    event.preventDefault();
-                    setIsDeleteLoading(true);
-
-                    // const deleted = await deletePost(post.id);
-                  }}
+                  onClick={(e) => handleDeleteLink(e)}
                 >
                   {isDeleteLoading ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
