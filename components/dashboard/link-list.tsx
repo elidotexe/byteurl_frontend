@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 
 import { getAllLinks } from "@/app/api/links";
@@ -12,34 +12,35 @@ import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import { Icons } from "@/components/icons";
 import LinkItem from "@/components/dashboard/link-item";
 import ItemSkeleton from "./item-skeleton";
+import { useQuery } from "@tanstack/react-query";
 
 interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
 }
 
 const LinkList = ({ user }: UserLinksProps) => {
-  const [links, setLinks] = React.useState<LinkType[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const {
+    data: links,
+    isLoading,
+    isError,
+  } = useQuery<LinkType[], Error>({
+    queryKey: ["links"],
+    queryFn: async () => {
+      const response = await getAllLinks(user.id, user.token);
+      return response as LinkType[];
+    },
+  });
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await getAllLinks(user.id, user.token);
-        setLinks(response);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+  if (isLoading) return <ItemSkeleton />;
+  if (isError) return <div>Something went wrong</div>;
 
-  if (loading) return <ItemSkeleton />;
-
-  const linksWithExtraParam = links.map((link: LinkType) => ({
-    ...link,
-    token: user.token,
-  }));
+  const linksWithExtraParam =
+    (links &&
+      links.map((link: LinkType) => ({
+        ...link,
+        token: user.token,
+      }))) ||
+    [];
 
   return (
     <>

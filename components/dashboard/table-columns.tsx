@@ -31,6 +31,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "../ui/use-toast";
 import { deleteLink } from "@/app/api/links";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const tableColumns: ColumnDef<LinkType>[] = [
   {
@@ -145,6 +146,7 @@ export const tableColumns: ColumnDef<LinkType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const router = useRouter();
+      const queryClient = useQueryClient();
 
       const links = row.original;
 
@@ -174,7 +176,7 @@ export const tableColumns: ColumnDef<LinkType>[] = [
           setShowDeleteAlert(false);
 
           if (response.status === 200) {
-            router.prefetch("/dashboard");
+            queryClient.invalidateQueries();
             return toast({
               title: response.data,
             });
