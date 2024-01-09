@@ -50,9 +50,7 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
     },
   });
 
-  const [isSaving, setIsSaving] = React.useState<boolean>(false);
-
-  const { mutateAsync: submitLinkMutation } = useMutation({
+  const { mutateAsync: submitLinkMutation, isPending } = useMutation({
     mutationFn: (data: FormData) => {
       return createLink({
         title: data.title,
@@ -92,14 +90,11 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
   });
 
   const onSubmit = async (data: FormData) => {
-    setIsSaving(true);
-
     try {
       await submitLinkMutation(data);
     } catch (err) {
       console.error(err);
     } finally {
-      setIsSaving(false);
       setValue("title", "");
       setValue("originalUrl", "");
     }
@@ -176,9 +171,9 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
           <button
             className={cn(buttonVariants(), className)}
             type="submit"
-            disabled={isSaving}
+            disabled={isPending}
           >
-            {isSaving && (
+            {isPending && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             <span>Save</span>

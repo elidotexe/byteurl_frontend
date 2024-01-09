@@ -31,7 +31,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "../ui/use-toast";
 import { deleteLink } from "@/app/api/links";
 import { useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 export const tableColumns: ColumnDef<LinkType>[] = [
   {
@@ -145,56 +146,57 @@ export const tableColumns: ColumnDef<LinkType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const router = useRouter();
-      const queryClient = useQueryClient();
-
       const links = row.original;
+      const queryClient = useQueryClient();
 
       const [showDeleteAlert, setShowDeleteAlert] =
         React.useState<boolean>(false);
-      const [isDeleteLoading, setIsDeleteLoading] =
-        React.useState<boolean>(false);
 
-      const handleDeleteLink = async (e: any) => {
-        e.preventDefault();
+      const { mutateAsync: deleteLinkMutation, isPending } = useMutation({
+        mutationFn: async () => {
+          if (!links.userId || !links?.token) return;
+          return deleteLink(links.userId, links.id, links?.token);
+        },
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["links"] });
 
-        setIsDeleteLoading(true);
+          return toast({
+            title: "Link successfully deleted!",
+          });
+        },
+        onError: (err: AxiosError) => {
+          const errorMessage = (err.response?.data as { message?: string })
+            ?.message;
 
-        if (links?.token === undefined || links?.userId === undefined) {
-          setShowDeleteAlert(false);
-          setIsDeleteLoading(false);
-          return;
-        }
-
-        try {
-          const response = await deleteLink(
-            links.userId,
-            links.id,
-            links?.token
-          );
-          setIsDeleteLoading(false);
-          setShowDeleteAlert(false);
-
-          if (response.status === 200) {
-            queryClient.invalidateQueries();
+          if (errorMessage) {
             return toast({
-              title: response.data,
+              title: `${errorMessage
+                .charAt(0)
+                ?.toUpperCase()}${errorMessage.slice(1)}!`,
+              description: "Please try again later.",
+              variant: "destructive",
             });
           }
 
           return toast({
             title: "Something went wrong!",
+            description: "Please try again later.",
             variant: "destructive",
           });
+        },
+      });
+
+      const handleDeleteLink = async (
+        e: React.MouseEvent<HTMLButtonElement>
+      ) => {
+        e.preventDefault();
+
+        try {
+          await deleteLinkMutation();
         } catch (err) {
           console.error(err);
-          setIsDeleteLoading(false);
+        } finally {
           setShowDeleteAlert(false);
-
-          return toast({
-            title: "Something went wrong!",
-            variant: "destructive",
-          });
         }
       };
 
@@ -251,7 +253,7 @@ export const tableColumns: ColumnDef<LinkType>[] = [
                   className="bg-red-600 focus:ring-red-600"
                   onClick={(e) => handleDeleteLink(e)}
                 >
-                  {isDeleteLoading ? (
+                  {isPending ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
                     <Icons.trash className="mr-2 h-4 w-4" />
