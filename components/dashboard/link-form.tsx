@@ -53,13 +53,14 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
   const [isSaving, setIsSaving] = React.useState<boolean>(false);
 
   const { mutateAsync: submitLinkMutation } = useMutation({
-    mutationFn: async (data: FormData) =>
-      await createLink({
+    mutationFn: (data: FormData) => {
+      return createLink({
         title: data.title,
         originalUrl: data.originalUrl,
         userId: user.id,
         token: user.token,
-      }),
+      });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["links"] });
 
@@ -92,8 +93,6 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
 
   const onSubmit = async (data: FormData) => {
     setIsSaving(true);
-
-    console.log(data);
 
     try {
       await submitLinkMutation(data);

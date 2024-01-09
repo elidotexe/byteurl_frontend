@@ -19,8 +19,6 @@ export const getAllLinks = async (userId: number, token: string) => {
 export const createLink = async (createLinkData: CreateLinkTypeData) => {
   const { title, originalUrl, userId, token } = createLinkData;
 
-  console.log("createLinkData", createLinkData);
-
   const response = await linkApi.put(
     `${userId}/links/0`,
     {
