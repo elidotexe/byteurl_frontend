@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CreateLinkTypeData } from "@/types";
+import { CreateLinkTypeData, LinkType } from "@/types";
 
 const linkApi = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/admin/users/`,
@@ -36,8 +36,18 @@ export const createLink = async (createLinkData: CreateLinkTypeData) => {
   return response;
 };
 
-export const updateLink = async (link: any) => {
-  return await linkApi.put(`/links/${link.id}`, link);
+export const getLink = async (
+  userId: number,
+  linkId: number,
+  token: string
+) => {
+  const response = await linkApi.get(`${userId}/links/${linkId}`);
+  return response.data;
+};
+
+export const updateLink = async (link: LinkType) => {
+  const response = await linkApi.put(`/links/${link.id}`, link);
+  return response;
 };
 
 export const deleteLink = async (

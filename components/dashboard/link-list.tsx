@@ -19,11 +19,7 @@ interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
 }
 
 const LinkList = ({ user }: UserLinksProps) => {
-  const {
-    data: links,
-    isLoading,
-    isError,
-  } = useQuery<LinkType[], Error>({
+  const { data: links, isLoading } = useQuery<LinkType[], Error>({
     queryKey: ["links"],
     queryFn: async () => {
       const response = await getAllLinks(user.id, user.token);
@@ -32,10 +28,9 @@ const LinkList = ({ user }: UserLinksProps) => {
   });
 
   if (isLoading) return <ItemSkeleton />;
-  if (isError) return <div>Something went wrong</div>;
 
   const linksWithExtraParam =
-    (links &&
+    (Array.isArray(links) &&
       links.map((link: LinkType) => ({
         ...link,
         token: user.token,

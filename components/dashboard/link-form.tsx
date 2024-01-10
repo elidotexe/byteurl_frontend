@@ -1,16 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { User } from "@/types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { LinkType, User } from "@/types";
 
 import { linkSchema } from "@/lib/validations/link";
-import { createLink } from "@/app/api/links";
+import { createLink, getLink } from "@/app/api/links";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -25,7 +25,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 
 import { Icons } from "@/components/icons";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
@@ -36,6 +36,28 @@ type FormData = z.infer<typeof linkSchema>;
 const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+
+  const pathname = usePathname();
+  const match = pathname.match(/\/(\d+)$/);
+
+  let linkId: number = 0;
+  if (match) {
+    linkId = parseInt(match[1], 10);
+  }
+
+  const { data: link } = useQuery<LinkType, Error>({
+    queryKey: ["links"],
+    queryFn: async () => {
+      if (linkId === 0) {
+        return {};
+      }
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users/${user.id}/links/${linkId}`
+      );
+
+      return data;
+    },
+  });
 
   const {
     handleSubmit,
@@ -64,7 +86,10 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
 
       router.push("/dashboard");
       return toast({
-        title: "Link successfully created!",
+        title:
+          linkId === 0
+            ? "Link successfully created!"
+            : "Link successfully updated!",
       });
     },
     onError: (err: AxiosError) => {
@@ -123,7 +148,7 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
               type="text"
               id="title"
               size={32}
-              placeholder="Title"
+              placeholder={link?.title ?? "Title"}
               {...register("title")}
               onChange={(e) => {
                 setValue("title", e.target.value);
@@ -153,7 +178,7 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
               type="text"
               id="originalUrl"
               size={32}
-              placeholder="https://example.com"
+              placeholder={link?.originalUrl ?? "https://example.com"}
               {...register("originalUrl")}
               onChange={(e) => {
                 setValue("originalUrl", e.target.value);

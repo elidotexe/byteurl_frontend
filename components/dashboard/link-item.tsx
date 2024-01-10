@@ -71,12 +71,12 @@ const LinkItem = ({ links, columns }: LinkItemsProps) => {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
+          className="max-w-sm"
           placeholder="Filter by title..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+          onChange={(e) =>
+            table.getColumn("title")?.setFilterValue(e.target.value)
           }
-          className="max-w-sm"
         />
 
         <DropdownMenu>
