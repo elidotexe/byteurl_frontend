@@ -41,8 +41,14 @@ export const getLink = async (
   linkId: number,
   token: string
 ) => {
-  const response = await linkApi.get(`${userId}/links/${linkId}`);
-  return response.data;
+  const response = await linkApi.get(`${userId}/links/${linkId}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response;
 };
 
 export const updateLink = async (link: LinkType) => {

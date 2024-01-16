@@ -37,11 +37,17 @@ const LinkList = ({ user }: UserLinksProps) => {
       }))) ||
     [];
 
+  const sortedLinks = linksWithExtraParam.sort((a, b) => {
+    const dateA = new Date(a.updatedAt).getTime();
+    const dateB = new Date(b.updatedAt).getTime();
+    return dateB - dateA;
+  });
+
   return (
     <>
       {links?.length ? (
         <>
-          <LinkItem links={linksWithExtraParam} columns={tableColumns} />
+          <LinkItem links={sortedLinks} columns={tableColumns} />
         </>
       ) : (
         <EmptyPlaceholder>

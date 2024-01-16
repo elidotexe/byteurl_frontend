@@ -51,10 +51,7 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
       if (linkId === 0) {
         return {};
       }
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users/${user.id}/links/${linkId}`
-      );
-
+      const { data } = await getLink(user.id, linkId, user.token);
       return data;
     },
   });

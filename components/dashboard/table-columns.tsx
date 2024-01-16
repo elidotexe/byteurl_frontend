@@ -99,11 +99,14 @@ export const tableColumns: ColumnDef<LinkType>[] = [
   {
     accessorKey: "shortenUrl",
     header: () => <div className="font-medium">Shorten URL</div>,
-    cell: ({ row }) => (
-      <Link href={row.getValue("shortenUrl")} target="_blank">
-        {row.getValue("shortenUrl")}
-      </Link>
-    ),
+    cell: ({ row }) => {
+      const shortenUrl = `http://localhost:3000/${row.getValue("shortenUrl")}`;
+      return (
+        <Link href={shortenUrl} target="_blank">
+          {shortenUrl}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "clicks",
