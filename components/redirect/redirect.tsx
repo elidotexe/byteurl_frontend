@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { notFound, usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
@@ -12,7 +12,7 @@ const Redirect = () => {
     pathname = pathname.substring(1);
   }
 
-  const { data: redirect } = useQuery({
+  const { data: redirect, isError } = useQuery({
     queryKey: ["redirect"],
     queryFn: async () => {
       const response = await axios.get(
@@ -29,7 +29,9 @@ const Redirect = () => {
     }
   }, [redirect]);
 
-  return <div>Current pathname: {pathname}</div>;
+  if (isError) return notFound();
+
+  return <></>;
 };
 
 export default Redirect;

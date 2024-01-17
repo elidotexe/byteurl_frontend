@@ -100,7 +100,9 @@ export const tableColumns: ColumnDef<LinkType>[] = [
     accessorKey: "shortenUrl",
     header: () => <div className="font-medium">Shorten URL</div>,
     cell: ({ row }) => {
-      const shortenUrl = `http://localhost:3000/${row.getValue("shortenUrl")}`;
+      const shortenUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${row.getValue(
+        "shortenUrl"
+      )}`;
       return (
         <Link href={shortenUrl} target="_blank">
           {shortenUrl}
@@ -210,7 +212,9 @@ export const tableColumns: ColumnDef<LinkType>[] = [
                 toast({
                   title: "Link copied to clipboard!",
                 });
-                navigator.clipboard.writeText(links.shortenUrl);
+
+                const shortenUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${links.shortenUrl}`;
+                navigator.clipboard.writeText(shortenUrl);
               }}
             >
               <Icons.copy className="h-4 w-4" />
