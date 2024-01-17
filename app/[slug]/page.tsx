@@ -1,6 +1,5 @@
-const RedirectPage = () => {
-  // return <div>Current pathname: {pathname}</div>;
-  return <div>Current pathname: Not implemented</div>;
-};
+import Redirect from "@/components/redirect/redirect";
+
+const RedirectPage = () => <Redirect />;
 
 export default RedirectPage;
