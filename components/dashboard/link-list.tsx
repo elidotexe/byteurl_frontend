@@ -21,7 +21,7 @@ interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
 }
 
-const LinkList = async ({ user }: UserLinksProps) => {
+const LinkList = ({ user }: UserLinksProps) => {
   const {
     data: links,
     isLoading,
@@ -37,7 +37,7 @@ const LinkList = async ({ user }: UserLinksProps) => {
   if (isLoading) return <ItemSkeleton />;
 
   if (error?.response?.status === 401) {
-    await signOut({
+    signOut({
       callbackUrl: "/login",
     });
 

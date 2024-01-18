@@ -7,7 +7,9 @@ import { useForm } from "react-hook-form";
 import { signOut, useSession } from "next-auth/react";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User } from "@/types";
+import { AxiosError } from "axios";
 
 import { updateUsername } from "@/app/api/users";
 import { userNameSchema } from "@/lib/validations/user";
@@ -36,6 +38,7 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
   const { data: session, update } = useSession();
 
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const {
     handleSubmit,
@@ -50,65 +53,65 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
     },
   });
 
-  const [isSaving, setIsSaving] = React.useState<boolean>(false);
+  const { mutateAsync: submitUsernameMutation, isPending } = useMutation({
+    mutationFn: (data: FormData) => {
+      try {
+        if (session?.user.token === undefined) {
+          toast({
+            title: "User is not defined.",
+            variant: "destructive",
+          });
 
-  const onSubmit = async (data: FormData) => {
-    setIsSaving(true);
+          throw new Error("User is not defined.");
+        }
 
-    if (session?.user.token === undefined) {
-      setIsSaving(false);
-
-      return toast({
-        title: "User is not defined.",
-        variant: "destructive",
-      });
-    }
-
-    try {
-      const response = await updateUsername(
-        user.id,
-        data.name,
-        session.user.token
-      );
-
-      setIsSaving(false);
-
-      if (response.status === 200) {
-        toast({
-          description: "Your name has been updated.",
-        });
-
-        router.refresh();
-        return;
+        return updateUsername(user.id, data.name, session.user.token);
+      } catch (err) {
+        throw err;
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["username"] });
 
+      router.refresh();
       return toast({
-        title: "Your name was not updated. Please try again.",
-        variant: "destructive",
+        description: "Your name has been updated.",
       });
-    } catch (err: any) {
-      console.error(err);
-      setIsSaving(false);
-
+    },
+    onError: (err: AxiosError) => {
       if (err.response?.status === 401) {
-        await signOut({
+        signOut({
           callbackUrl: "/login",
         });
+      }
 
+      const errorMessage = (err.response?.data as { message?: string })
+        ?.message;
+      console.error(errorMessage || "An error occured.", err);
+
+      if (errorMessage) {
         return toast({
-          title: "You are not authorized to perform this action.",
-          description: "Please login to your account.",
+          title: `${errorMessage.charAt(0)?.toUpperCase()}${errorMessage.slice(
+            1
+          )}!`,
+          description: "Please try again later.",
           variant: "destructive",
         });
       }
 
       return toast({
-        title: `${err.response?.data?.message
-          ?.charAt(0)
-          ?.toUpperCase()}${err.response?.data?.message?.slice(1)}!`,
-        description: "Your name was not updated. Please try again.",
+        title: "Something went wrong!",
+        description: "Please try again later.",
         variant: "destructive",
       });
+    },
+  });
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      await submitUsernameMutation(data);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -150,13 +153,13 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
           <button
             className={cn(buttonVariants(), className)}
             type="submit"
-            disabled={isSaving}
+            disabled={isPending}
             onClick={() => {
               const { name } = getValues();
               update({ name });
             }}
           >
-            {isSaving && (
+            {isPending && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             <span>Save</span>

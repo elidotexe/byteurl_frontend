@@ -7,7 +7,9 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { signOut } from "next-auth/react";
 import { LinkType, User } from "@/types";
+import { AxiosError } from "axios";
 
 import { linkSchema } from "@/lib/validations/link";
 import { createLink, getLink } from "@/app/api/links";
@@ -25,7 +27,6 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 
 import { Icons } from "@/components/icons";
-import axios, { AxiosError } from "axios";
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
@@ -33,7 +34,7 @@ interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
 
 type FormData = z.infer<typeof linkSchema>;
 
-const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
+const LinkForm = ({ user, className, ...props }: UserNameFormProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -71,12 +72,16 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
 
   const { mutateAsync: submitLinkMutation, isPending } = useMutation({
     mutationFn: (data: FormData) => {
-      return createLink({
-        title: data.title,
-        originalUrl: data.originalUrl,
-        userId: user.id,
-        token: user.token,
-      });
+      try {
+        return createLink({
+          title: data.title,
+          originalUrl: data.originalUrl,
+          userId: user.id,
+          token: user.token,
+        });
+      } catch (err) {
+        throw err;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["links"] });
@@ -90,8 +95,15 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
       });
     },
     onError: (err: AxiosError) => {
+      if (err.response?.status === 401) {
+        signOut({
+          callbackUrl: "/login",
+        });
+      }
+
       const errorMessage = (err.response?.data as { message?: string })
         ?.message;
+      console.error(errorMessage || "An error occured.", err);
 
       if (errorMessage) {
         return toast({
@@ -206,4 +218,4 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
   );
 };
 
-export default UserNameForm;
+export default LinkForm;
