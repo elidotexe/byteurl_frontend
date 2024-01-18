@@ -7,19 +7,26 @@ import { getAllLinks } from "@/app/api/links";
 import { tableColumns } from "./table-columns";
 import { useQuery } from "@tanstack/react-query";
 import { User, LinkType } from "@/types";
+import { AxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import { Icons } from "@/components/icons";
 import LinkItem from "@/components/dashboard/link-item";
 import ItemSkeleton from "./item-skeleton";
+import { toast } from "../ui/use-toast";
+import { signOut } from "next-auth/react";
 
 interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
 }
 
-const LinkList = ({ user }: UserLinksProps) => {
-  const { data: links, isLoading } = useQuery<LinkType[], Error>({
+const LinkList = async ({ user }: UserLinksProps) => {
+  const {
+    data: links,
+    isLoading,
+    error,
+  } = useQuery<LinkType[], AxiosError>({
     queryKey: ["links"],
     queryFn: async () => {
       const response = await getAllLinks(user.id, user.token);
@@ -28,6 +35,18 @@ const LinkList = ({ user }: UserLinksProps) => {
   });
 
   if (isLoading) return <ItemSkeleton />;
+
+  if (error?.response?.status === 401) {
+    await signOut({
+      callbackUrl: "/login",
+    });
+
+    toast({
+      title: "You're not authorized!",
+      description: "Please login to your account.",
+      variant: "destructive",
+    });
+  }
 
   const linksWithExtraParam =
     (Array.isArray(links) &&
@@ -45,7 +64,7 @@ const LinkList = ({ user }: UserLinksProps) => {
 
   return (
     <>
-      {links?.length ? (
+      {sortedLinks?.length ? (
         <>
           <LinkItem links={sortedLinks} columns={tableColumns} />
         </>

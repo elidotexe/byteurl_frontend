@@ -97,6 +97,7 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
 
         return toast({
           title: "You are not authorized to perform this action.",
+          description: "Please login to your account.",
           variant: "destructive",
         });
       }
