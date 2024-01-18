@@ -72,6 +72,7 @@ const UserNameForm = ({ user, className, ...props }: UserNameFormProps) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["username"] });
+      queryClient.invalidateQueries({ queryKey: ["username"] });
 
       router.refresh();
       return toast({

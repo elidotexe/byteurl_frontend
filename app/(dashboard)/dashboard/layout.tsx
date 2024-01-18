@@ -17,8 +17,6 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
 
   if (!user) return notFound();
 
-  console.log("user: ", user);
-
   return (
     <div className="flex min-h-screen flex-col space-y-6">
       <header className="sticky top-0 z-40 border-b bg-background">
@@ -26,8 +24,10 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
           <Nav items={dashboardConfig.mainNav} />
           <UserAccountNav
             user={{
-              name: user.name ?? "",
-              email: user.email ?? "",
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              token: user.token,
             }}
           />
         </div>

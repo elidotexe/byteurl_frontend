@@ -23,7 +23,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <UserAvatar className="h-8 w-8" user={{ name: user.name ?? "" }} />
+        <UserAvatar className="h-8 w-8" user={user} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <div className="flex items-center justify-start gap-2 p-2">
