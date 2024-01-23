@@ -46,8 +46,6 @@ const UserAvatar = ({ user, ...props }: UserAvatarProps) => {
     }
   }, [username]);
 
-  console.log(avatarUsername);
-
   return (
     <Avatar {...props}>
       <AvatarFallback>
