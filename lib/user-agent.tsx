@@ -29,7 +29,6 @@ export function getUserAgent() {
       break;
   }
 
-  // Detecting device
   var device = "Unknown Device";
   switch (true) {
     case userAgent.includes("iPhone"):
