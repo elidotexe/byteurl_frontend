@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getUserAgent } from "@/lib/user-agent";
 import axios from "axios";
+import { getRedirect, sendRedirect } from "@/app/api/redirect-data";
 
 const Redirect = () => {
   let pathname = usePathname();
@@ -20,10 +21,7 @@ const Redirect = () => {
   } = useQuery({
     queryKey: ["redirect"],
     queryFn: async () => {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/redirect/${pathname}`
-      );
-
+      const response = await getRedirect(pathname);
       return response.data.originalUrl as string;
     },
   });
@@ -40,13 +38,11 @@ const Redirect = () => {
 
   const sendRedirectData = async (ipAddress: string) => {
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/redirect/${pathname}`,
-        {
-          browser: getUserAgent().browser,
-          device: getUserAgent().device,
-          ipAddress: ipAddress,
-        }
+      const response = await sendRedirect(
+        pathname,
+        getUserAgent().browser,
+        getUserAgent().device,
+        ipAddress
       );
 
       return response.data;
