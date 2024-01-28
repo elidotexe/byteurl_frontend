@@ -20,6 +20,7 @@ import { toast } from "../ui/use-toast";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Icons } from "../icons";
+import axios from "axios";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -47,34 +48,27 @@ const RegisterForm = () => {
     }
 
     try {
-      const response = await signIn("credentials", {
-        redirect: false,
-        name: v.name,
-        email: v.email,
-        password: v.password,
-      });
-
-      console.log("response:", response);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/signup`,
+        {
+          name: v.name,
+          email: v.email,
+          password: v.password,
+        }
+      );
 
       setIsSaving(false);
 
       if (response?.status === 200) {
-        router.push("/dashboard");
+        router.push("/login");
         return toast({
           title: "You have successfully created an account!",
         });
       }
 
-      const errorObject = JSON.parse(response?.error ?? "{}");
-
       return toast({
-        title: `${errorObject.error
-          .charAt(0)
-          .toUpperCase()}${errorObject.error.slice(1)}!`,
-        description:
-          errorObject.status === 409
-            ? "Please try creating an account with a different email"
-            : "Please try again",
+        title: "Something went wrong",
+        description: "Please try again",
         variant: "destructive",
       });
     } catch (err: any) {

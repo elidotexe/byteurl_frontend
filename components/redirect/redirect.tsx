@@ -4,8 +4,9 @@ import { notFound, usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getUserAgent } from "@/lib/user-agent";
-import axios from "axios";
 import { getRedirect, sendRedirect } from "@/app/api/redirect-data";
+import axios from "axios";
+import Loader from "../loader";
 
 const Redirect = () => {
   let pathname = usePathname();
@@ -63,7 +64,7 @@ const Redirect = () => {
     fetchData();
   }, [redirect, isLoading]);
 
-  if (isLoading) return <div>Loading</div>;
+  if (isLoading) return <Loader />;
   if (isError) return notFound();
 
   return <></>;
