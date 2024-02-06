@@ -44,6 +44,9 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
           <Link href="/dashboard/analytics">Analytics</Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer" asChild>
+          <Link href="/dashboard/geolocation">Geolocation</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" asChild>
           <Link href="/dashboard/settings">Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

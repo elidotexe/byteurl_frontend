@@ -24,6 +24,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "analytics",
     },
     {
+      title: "Geolocation",
+      href: "/dashboard/geolocation",
+      icon: "globe",
+    },
+    {
       title: "Settings",
       href: "/dashboard/settings",
       icon: "settings",
