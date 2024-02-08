@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 
-import { AreaChart, Area } from "recharts";
 import axios, { AxiosError } from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { signOut } from "next-auth/react";
@@ -13,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import { Icons } from "@/components/icons";
 import ItemSkeleton from "./item-skeleton";
+import AreaChartComponent from "./area-chart";
+import BarChartComponent from "./bar-chart";
 
 interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
@@ -47,12 +48,15 @@ const Analytics = ({ user }: UserLinksProps) => {
     });
   }
 
+  console.log(JSON.stringify(linksWithRedirectHistory));
+
   return (
     <>
       {linksWithRedirectHistory?.length ? (
-        <>
-          <AreaChart />
-        </>
+        <div>
+          <AreaChartComponent />
+          <BarChartComponent />
+        </div>
       ) : (
         <EmptyPlaceholder>
           <EmptyPlaceholder.Icon name="link" />
