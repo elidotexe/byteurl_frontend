@@ -1,6 +1,5 @@
 "use client";
 
-import { formatDate } from "@/lib/utils";
 import {
   AreaChart,
   Area,
@@ -220,62 +219,60 @@ const linkPerformance = [
   },
 ];
 
-interface FormattedLinkPerformanceItem {
-  id: number;
-  userId: number;
-  title: string;
-  originalUrl: string;
-  shortenUrl: string;
-  clicks: number;
-  redirectHistory: any[];
-  createdAt: string;
-  updatedAt: string;
-}
-
 const AreaChartComponent = () => {
-  const uniqueDates = new Set<string>();
-  const formattedLinkPerformance: FormattedLinkPerformanceItem[] =
-    linkPerformance.reduce<FormattedLinkPerformanceItem[]>((acc, item) => {
-      const formattedDate = formatDate(item.createdAt);
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
-      if (!uniqueDates.has(formattedDate)) {
-        uniqueDates.add(formattedDate);
-        acc.push({
-          ...item,
-          createdAt: formattedDate,
-        });
-      }
-
-      return acc;
-    }, []);
-
-  formattedLinkPerformance.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  const performanceByMonth = monthNames.map((month, index) => {
+    const monthIndex = index + 1;
+    const totalClicks = linkPerformance.reduce((total, link) => {
+      const clicksInMonth = link.redirectHistory.filter((historyItem) => {
+        const historyMonth = new Date(historyItem.createdAt).getMonth() + 1;
+        return historyMonth === monthIndex;
+      }).length;
+      return total + clicksInMonth;
+    }, 0);
+    return { month, clicks: totalClicks };
+  });
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <AreaChart
-        width={500}
-        height={400}
-        data={formattedLinkPerformance}
-        margin={{ right: 30 }}
-      >
-        <XAxis dataKey="createdAt" type="category" />
-        <YAxis />
-        <CartesianGrid strokeDasharray="5 5" />
-        <Tooltip />
-        <Legend />
+    <>
+      <h2 className="text-center">Monthly Click Performance</h2>
+      <ResponsiveContainer width="100%" height={400}>
+        <AreaChart
+          width={500}
+          height={400}
+          data={performanceByMonth}
+          margin={{ top: 5 }}
+        >
+          <XAxis dataKey="month" />
+          <YAxis />
+          <CartesianGrid strokeDasharray="5 5" />
+          <Tooltip />
+          <Legend />
 
-        <Area
-          type="monotone"
-          dataKey="clicks"
-          name="Clicks"
-          stroke="#8884d8"
-          fill="#8884d8"
-        />
-      </AreaChart>
-    </ResponsiveContainer>
+          <Area
+            type="monotone"
+            dataKey="clicks"
+            name="Clicks"
+            stroke="#8884d8"
+            fill="#8884d8"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </>
   );
 };
 

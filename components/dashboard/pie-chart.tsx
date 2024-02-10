@@ -221,7 +221,7 @@ const PieChartComponent = () => {
     Other: "#b5e7a0",
   };
 
-  const browserColors = {
+  const browserColors: Record<string, string> = {
     Chrome: "#6a8bf5",
     Firefox: "#84d4e3",
     Opera: "#76c7b7",
@@ -258,7 +258,6 @@ const PieChartComponent = () => {
   return (
     <div className="flex justify-between items-center">
       <div>
-        <h2 className="text-center">Device Chart</h2>
         <PieChart width={500} height={500}>
           <Pie
             dataKey="count"
@@ -275,7 +274,6 @@ const PieChartComponent = () => {
       </div>
 
       <div>
-        <h2 className="text-center">Browser Chart</h2>
         <PieChart width={500} height={500}>
           <Pie
             dataKey="count"

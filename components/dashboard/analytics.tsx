@@ -13,7 +13,7 @@ import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import { Icons } from "@/components/icons";
 import ItemSkeleton from "./item-skeleton";
 import AreaChartComponent from "./area-chart";
-import BarChartComponent from "./bar-chart";
+import BarChartComponent from "./pie-chart";
 
 interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
