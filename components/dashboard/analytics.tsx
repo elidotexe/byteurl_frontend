@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { signOut } from "next-auth/react";
 import { toast } from "../ui/use-toast";
 
-import { LinkType, User } from "@/types";
+import { LinkType, LinksWithRedirectHistory, User } from "@/types";
 import { Button } from "@/components/ui/button";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import { Icons } from "@/components/icons";
@@ -24,7 +24,7 @@ const Analytics = ({ user }: UserLinksProps) => {
     data: linksWithRedirectHistory,
     isLoading,
     error,
-  } = useQuery<LinkType[], AxiosError>({
+  } = useQuery<LinksWithRedirectHistory[], AxiosError>({
     queryKey: ["linksHistory"],
     queryFn: async () => {
       const response = await axios.get(
@@ -54,8 +54,12 @@ const Analytics = ({ user }: UserLinksProps) => {
     <>
       {linksWithRedirectHistory?.length ? (
         <div>
-          <AreaChartComponent />
-          <BarChartComponent />
+          <AreaChartComponent
+            linksWithRedirectHistory={linksWithRedirectHistory}
+          />
+          <BarChartComponent
+            linksWithRedirectHistory={linksWithRedirectHistory}
+          />
         </div>
       ) : (
         <EmptyPlaceholder>

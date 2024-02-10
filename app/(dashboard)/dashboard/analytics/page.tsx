@@ -17,7 +17,10 @@ const AnalyticsPage = async () => {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Links" text="Create and manage links.">
+      <DashboardHeader
+        heading="Analytics"
+        text="Learn about your audience by tracking the performance of your links."
+      >
         <Link className={cn(buttonVariants())} href="/dashboard/editor/0">
           <Icons.add className="mr-2 h-4 w-4" />
           New link

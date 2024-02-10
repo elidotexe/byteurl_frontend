@@ -66,3 +66,22 @@ export type CreateLinkTypeData = {
   userId: number;
   token: string;
 };
+
+export interface LinksWithRedirectHistory {
+  id: number;
+  userId: number;
+  title: string;
+  originalUrl: string;
+  shortenUrl: string;
+  clicks: number;
+  redirectHistory: {
+    id: number;
+    linkId: number;
+    device: string;
+    browser: string;
+    ipAddress: string;
+    createdAt: string;
+  }[];
+  createdAt: string;
+  updatedAt: string;
+}
