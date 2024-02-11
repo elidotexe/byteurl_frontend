@@ -105,7 +105,7 @@ export const tableColumns: ColumnDef<LinkType>[] = [
       )}`;
       return (
         <Link href={shortenUrl} target="_blank">
-          {shortenUrl}
+          {row.getValue("shortenUrl")}
         </Link>
       );
     },
