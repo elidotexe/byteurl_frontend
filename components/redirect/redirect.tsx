@@ -37,13 +37,31 @@ const Redirect = () => {
     }
   };
 
-  const sendRedirectData = async (ipAddress: string) => {
+  const getLocation = async (ipAddress: string) => {
+    try {
+      const apiToken = process.env.NEXT_PUBLIC_IPBASE_TOKEN;
+      const response = await axios.get(
+        `https://ipinfo.io/${ipAddress}?token=${apiToken}`
+      );
+
+      const { loc } = response.data;
+
+      const [latitude, longitude] = loc.split(",").map(Number);
+      return `${latitude},${longitude}`;
+    } catch (err) {
+      console.error("Error getting location:", err);
+      return null;
+    }
+  };
+
+  const sendRedirectData = async (ipAddress: string, location: string) => {
     try {
       const response = await sendRedirect(
         pathname,
         getUserAgent().browser,
         getUserAgent().device,
-        ipAddress
+        ipAddress,
+        location
       );
 
       return response.data;
@@ -54,10 +72,20 @@ const Redirect = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (typeof window !== "undefined" && redirect && !isLoading) {
-        const ipAddress = await getIpAddress();
-        sendRedirectData(ipAddress);
-        window.location.href = redirect;
+      if (redirect) {
+        try {
+          const ipAddress = await getIpAddress();
+          let location = await getLocation(ipAddress);
+          if (location === null) {
+            location = "Unknown";
+          }
+
+          await sendRedirectData(ipAddress, location);
+
+          window.location.href = redirect;
+        } catch (err) {
+          console.error("Error fetching or sending redirect data:", err);
+        }
       }
     };
 

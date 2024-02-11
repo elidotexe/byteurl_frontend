@@ -80,6 +80,7 @@ export interface LinksWithRedirectHistory {
     device: string;
     browser: string;
     ipAddress: string;
+    location: string;
     createdAt: string;
   }[];
   createdAt: string;

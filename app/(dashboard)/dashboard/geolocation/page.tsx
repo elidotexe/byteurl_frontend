@@ -1,33 +1,35 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+
+import mapboxgl from "mapbox-gl";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+import getCurrentUser from "@/lib/session";
 
 import { Icons } from "@/components/icons";
-import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
-import { Button } from "@/components/ui/button";
 import DashboardShell from "@/components/dashboard/shell";
 import DashboardHeader from "@/components/dashboard/header";
+import GeoLocation from "@/components/dashboard/geolocation";
 
-const GeoLocation = () => {
+const GeoLocationPage = async () => {
+  const user = await getCurrentUser();
+
+  if (!user) return redirect("/login");
+
   return (
     <DashboardShell>
       <DashboardHeader
         heading="Geolocation"
-        text="Learn about your audience by tracking the progress of your links."
-      />
-      <EmptyPlaceholder>
-        <EmptyPlaceholder.Icon name="link" />
-        <EmptyPlaceholder.Title>No links created</EmptyPlaceholder.Title>
-        <EmptyPlaceholder.Description>
-          You don&apos;t have any links yet. Start creating links.
-        </EmptyPlaceholder.Description>
-        <Button variant="outline" asChild>
-          <Link href="/dashboard/editor/0">
-            <Icons.add className="mr-2 h-4 w-4" />
-            New link
-          </Link>
-        </Button>
-      </EmptyPlaceholder>
+        text="Get insights into where your audience is located."
+      >
+        <Link className={cn(buttonVariants())} href="/dashboard/editor/0">
+          <Icons.add className="mr-2 h-4 w-4" />
+          New link
+        </Link>
+      </DashboardHeader>
+      <GeoLocation user={user} />
     </DashboardShell>
   );
 };
 
-export default GeoLocation;
+export default GeoLocationPage;

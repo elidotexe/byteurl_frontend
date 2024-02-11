@@ -12,14 +12,13 @@ import { Button } from "@/components/ui/button";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
 import { Icons } from "@/components/icons";
 import ItemSkeleton from "./item-skeleton";
-import AreaChartComponent from "./area-chart";
-import BarChartComponent from "./pie-chart";
+import MapBoxComponent from "./map-box";
 
 interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
 }
 
-const Analytics = ({ user }: UserLinksProps) => {
+const GeoLocation = ({ user }: UserLinksProps) => {
   const {
     data: linksWithRedirectHistory,
     isLoading,
@@ -48,16 +47,18 @@ const Analytics = ({ user }: UserLinksProps) => {
     });
   }
 
+  const locations = linksWithRedirectHistory?.flatMap((link) =>
+    link.redirectHistory
+      .filter((history) => history.location !== "Unknown")
+      .map((history) => history.location)
+      .filter((loco, index, self) => self.indexOf(loco) === index)
+  );
+
   return (
     <>
-      {linksWithRedirectHistory?.length ? (
-        <div>
-          <AreaChartComponent
-            linksWithRedirectHistory={linksWithRedirectHistory}
-          />
-          <BarChartComponent
-            linksWithRedirectHistory={linksWithRedirectHistory}
-          />
+      {locations?.length ? (
+        <div className="max-h-[70vh]">
+          <MapBoxComponent locations={locations} />
         </div>
       ) : (
         <EmptyPlaceholder>
@@ -78,4 +79,4 @@ const Analytics = ({ user }: UserLinksProps) => {
   );
 };
 
-export default Analytics;
+export default GeoLocation;

@@ -13,12 +13,14 @@ export const sendRedirect = async (
   pathname: string,
   browser: string,
   device: string,
-  ipAddress: string
+  ipAddress: string,
+  location: string
 ) => {
   const response = await redirectApi.post(`${pathname}`, {
     browser,
     device,
     ipAddress,
+    location,
   });
 
   return response;
