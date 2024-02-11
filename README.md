@@ -1,6 +1,6 @@
-# ByteURL - URL Shortener Application
+# ByteURL
 
-An open source application using Next.js 13, NextAuth, TypeScript, Tailwind CSS, Shadcn, React Query, as well as Recharts specifically for the graphical interface of the analytics page and MapBox to track users location on the map.
+An open-source URL shortener application built using Next.js 13, NextAuth, TypeScript, Tailwind CSS, Shadcn, React Query, as well as Recharts specifically for the graphical interface of the analytics page and MapBox to track users locations on the map.
 
 > **Warning**
 > This app is a work in progress. It hasn't been deployed yet as I'm currently addressing bugs, developing the mobile responsiveness, adding new features and creating content.
