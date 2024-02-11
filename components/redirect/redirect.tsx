@@ -49,7 +49,7 @@ const Redirect = () => {
       return `${latitude},${longitude}`;
     } catch (err) {
       console.error("Error getting location:", err);
-      return null;
+      return "Unknown";
     }
   };
 
@@ -74,10 +74,7 @@ const Redirect = () => {
       if (redirect) {
         try {
           const ipAddress = await getIpAddress();
-          let location = await getLocation(ipAddress);
-          if (location === null) {
-            location = "Unknown";
-          }
+          const location = await getLocation(ipAddress);
 
           await sendRedirectData(ipAddress, location);
 

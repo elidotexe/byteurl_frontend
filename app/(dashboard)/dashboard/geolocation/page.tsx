@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import mapboxgl from "mapbox-gl";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import getCurrentUser from "@/lib/session";
