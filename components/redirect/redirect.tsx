@@ -39,9 +39,8 @@ const Redirect = () => {
 
   const getLocation = async (ipAddress: string) => {
     try {
-      const apiToken = process.env.NEXT_PUBLIC_IPBASE_TOKEN;
       const response = await axios.get(
-        `https://ipinfo.io/${ipAddress}?token=${apiToken}`
+        `https://ipinfo.io/${ipAddress}?token=${process.env.NEXT_PUBLIC_IP_TOKEN}`
       );
 
       const { loc } = response.data;
