@@ -6,6 +6,8 @@ An open-source URL shortener application built using Next.js 13, NextAuth, TypeS
 > This app is a work in progress. It hasn't been deployed yet as I'm currently addressing bugs, developing the mobile responsiveness, adding new features and creating content.
 > See the roadmap below.
 
+**[The back-end of the application](https://github.com/elidotexe/byteurl_backend)**
+
 ## About this project
 
 This project is an experimental app I built using Next.js 13 for the frontend and Golang for the backend.
