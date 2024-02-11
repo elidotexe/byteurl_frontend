@@ -18,15 +18,15 @@ The Links user interface enables you to perform CRUD operations and track the cl
 
 ### Analytics
 
-<img width="1511" alt="image" src="https://github.com/elidotexe/byteurl_frontend/tree/master/assets/img/analytics_1">
+<img width="1511" alt="image" src="https://github.com/elidotexe/byteurl_frontend/assets/img/analytics_1.png">
 
-<img width="1511" alt="image" src="https://github.com/elidotexe/byteurl_frontend/tree/master/assets/img/analytics_2">
+<img width="1511" alt="image" src="https://github.com/elidotexe/byteurl_frontend/assets/img/analytics_2.png">
 
 The analytics page allows you to learn about the people who clicked on your link by displaying the monthly performance of your click count, device type, and browser type.
 
 ### Geolocation
 
-<img width="1511" alt="image" src="https://github.com/elidotexe/byteurl_frontend/tree/master/assets/img/geolocation_1">
+<img width="1511" alt="image" src="https://github.com/elidotexe/byteurl_frontend/assets/img/geolocation_1.png">
 
 The geolocation page allows you to get insights into where your audience is located on the map.
 
@@ -44,7 +44,7 @@ The geolocation page allows you to get insights into where your audience is loca
 
 ## Running Locally
 
-1. Install dependencies using pnpm:
+1. Install dependencies using npm:
 
 ```sh
 npm install
