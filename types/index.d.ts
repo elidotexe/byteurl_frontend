@@ -60,7 +60,7 @@ export type LinkType = {
   token?: string;
 };
 
-export type CreateLinkTypeData = {
+export type LinkTypeData = {
   title: string;
   originalUrl: string;
   userId: number;

@@ -12,7 +12,7 @@ import { LinkType, User } from "@/types";
 import { AxiosError } from "axios";
 
 import { linkSchema } from "@/lib/validations/link";
-import { createLink, getLink } from "@/app/api/links";
+import { createLink, getLink, updateLink } from "@/app/api/links";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -73,6 +73,18 @@ const LinkForm = ({ user, className, ...props }: UserNameFormProps) => {
   const { mutateAsync: submitLinkMutation, isPending } = useMutation({
     mutationFn: (data: FormData) => {
       try {
+        if (linkId !== 0) {
+          return updateLink(
+            {
+              title: data.title,
+              originalUrl: data.originalUrl,
+              userId: user.id,
+              token: user.token,
+            },
+            linkId
+          );
+        }
+
         return createLink({
           title: data.title,
           originalUrl: data.originalUrl,

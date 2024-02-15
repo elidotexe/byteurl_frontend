@@ -70,8 +70,6 @@ const LinkOperations = ({ link }: LinkOperationsProps) => {
               onClick={async (event) => {
                 event.preventDefault();
                 setIsDeleteLoading(true);
-
-                // const deleted = await deletePost(post.id);
               }}
               className="bg-red-600 focus:ring-red-600"
             >
