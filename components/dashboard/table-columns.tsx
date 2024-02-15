@@ -98,7 +98,7 @@ export const tableColumns: ColumnDef<LinkType>[] = [
   },
   {
     accessorKey: "shortenUrl",
-    header: () => <div className="font-medium">Shorten URL</div>,
+    header: () => <div className="font-medium">Shorten</div>,
     cell: ({ row }) => {
       const shortenUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${row.getValue(
         "shortenUrl"
@@ -129,20 +129,20 @@ export const tableColumns: ColumnDef<LinkType>[] = [
     },
   },
   {
-    accessorKey: "updatedAt",
+    accessorKey: "createdAt",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Updated at
+          Created at
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const formattedDate = formatDate(row.getValue("updatedAt"));
+      const formattedDate = formatDate(row.getValue("createdAt"));
       return <div className="text-center lowercase mr-10">{formattedDate}</div>;
     },
   },

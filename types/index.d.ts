@@ -54,8 +54,8 @@ export type LinkType = {
   originalUrl: string;
   shortenUrl: string;
   clicks: number;
-  createdAt?: string;
-  updatedAt: string;
+  createdAt: string;
+  updatedAt?: string;
   userId?: number;
   token?: string;
 };
