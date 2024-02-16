@@ -15,6 +15,8 @@ const Redirect = () => {
     pathname = pathname.substring(1);
   }
 
+  console.log(pathname);
+
   const {
     data: redirect,
     isLoading,

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import getCurrentUser from "@/lib/session";
 import { marketingConfig } from "@/config/marketing";
 
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,9 @@ import Nav from "@/components/navigation/nav";
 import Hero from "@/components/elements/hero";
 import Footer from "@/components/navigation/footer";
 
-const IndexPage = () => {
+const IndexPage = async () => {
+  const user = await getCurrentUser();
+
   return (
     <>
       <PaddingContainer>
@@ -19,7 +22,11 @@ const IndexPage = () => {
             variant="outline"
             asChild
           >
-            <Link href="/login">Login</Link>
+            {user ? (
+              <Link href="/dashboard">Dashboard</Link>
+            ) : (
+              <Link href="/login">Login</Link>
+            )}
           </Button>
         </div>
       </PaddingContainer>

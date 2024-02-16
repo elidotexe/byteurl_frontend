@@ -72,7 +72,7 @@ const RegisterForm = () => {
         variant: "destructive",
       });
     } catch (err: any) {
-      console.error(err);
+      console.error(`Error: ${err}`);
       return toast({
         title: "Something went wrong",
         description: "Please try again",

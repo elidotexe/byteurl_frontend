@@ -42,12 +42,12 @@ const LoginForm = () => {
         password: v.password,
       });
 
-      console.log("response", response);
-
       setIsSaving(false);
 
       if (response?.status === 200) {
         router.push("/dashboard");
+        router.refresh();
+
         return toast({
           title: "You have successfully logged in!",
         });
@@ -63,7 +63,7 @@ const LoginForm = () => {
         variant: "destructive",
       });
     } catch (err: any) {
-      console.error(err);
+      console.error(`Error: ${err}`);
       toast({
         title: "Something went wrong",
         description: "Please try again",

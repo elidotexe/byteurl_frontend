@@ -14,16 +14,14 @@ const Footer = ({ className }: React.HTMLAttributes<HTMLElement>) => {
           <Icons.logo />
           <div className="text-sm">
             Built by{" "}
-            <Link
-              className="font-medium underline underline-offset-4"
-              href="#!"
-            >
+            <span className="font-medium underline underline-offset-4">
               Eli
-            </Link>
+            </span>
             . The source code is available on{" "}
             <Link
               className="font-medium underline underline-offset-4"
-              href="#!"
+              href="https://github.com/elidotexe/byteurl_frontend"
+              target="_blank"
             >
               GitHub
             </Link>
