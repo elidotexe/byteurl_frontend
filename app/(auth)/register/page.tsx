@@ -5,6 +5,12 @@ import { buttonVariants } from "@/components/ui/button";
 
 import RegisterForm from "@/components/auth/register-form";
 import { Icons } from "@/components/icons";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Register | ByteURL",
+  description: "Create an account to start creating and managing links",
+};
 
 const RegisterPage = () => {
   return (

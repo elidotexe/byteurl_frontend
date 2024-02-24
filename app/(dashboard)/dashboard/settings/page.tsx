@@ -2,11 +2,12 @@ import { notFound } from "next/navigation";
 
 import getCurrentUser from "@/lib/session";
 
+import { Metadata } from "next";
 import DashboardShell from "@/components/dashboard/shell";
 import DashboardHeader from "@/components/dashboard/header";
 import UserNameForm from "@/components/dashboard/user-name-form";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Settings",
   description: "Manage account and website settings",
 };

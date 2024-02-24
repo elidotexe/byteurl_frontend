@@ -3,14 +3,15 @@ import { redirect } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import getCurrentUser from "@/lib/session";
-
 import { buttonVariants } from "@/components/ui/button";
+
+import { Metadata } from "next";
 import { Icons } from "@/components/icons";
 import DashboardShell from "@/components/dashboard/shell";
 import DashboardHeader from "@/components/dashboard/header";
 import LinkList from "@/components/dashboard/link-list";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Dashboard",
 };
 

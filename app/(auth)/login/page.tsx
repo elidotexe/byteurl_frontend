@@ -8,7 +8,7 @@ import LoginForm from "@/components/auth/login-form";
 import { Icons } from "@/components/icons";
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "Login | ByteURL",
   description: "Login to your account",
 };
 

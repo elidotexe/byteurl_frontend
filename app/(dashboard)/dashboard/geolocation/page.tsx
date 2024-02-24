@@ -1,15 +1,17 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 import getCurrentUser from "@/lib/session";
 
-import { Icons } from "@/components/icons";
+import { DatePickerWithRange } from "@/components/dashboard/data-picker-range";
+import { Metadata } from "next";
+import GeoLocation from "@/components/dashboard/geolocation";
 import DashboardShell from "@/components/dashboard/shell";
 import DashboardHeader from "@/components/dashboard/header";
-import GeoLocation from "@/components/dashboard/geolocation";
-import { DatePickerWithRange } from "@/components/dashboard/data-picker-range";
+
+export const metadata: Metadata = {
+  title: "Geolocation",
+  description: "Get insights into where your audience is located.",
+};
 
 const GeoLocationPage = async () => {
   const user = await getCurrentUser();
@@ -28,10 +30,5 @@ const GeoLocationPage = async () => {
     </DashboardShell>
   );
 };
-
-// <Link className={cn(buttonVariants())} href="/dashboard/editor/0">
-//   <Icons.add className="mr-2 h-4 w-4" />
-//   New link
-// </Link>
 
 export default GeoLocationPage;

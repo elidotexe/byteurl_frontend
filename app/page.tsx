@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import PaddingContainer from "@/components/layout/padding-container";
 import Nav from "@/components/navigation/nav";
 import Footer from "@/components/navigation/footer";
+import { Icons } from "@/components/icons";
 
 const IndexPage = async () => {
   const user = await getCurrentUser();
@@ -31,10 +32,16 @@ const IndexPage = async () => {
       </PaddingContainer>
       <main>
         <PaddingContainer>
-          <section className="flex items-center justify-center py-32">
-            <div className="max-w-[64rem] text-center">
+          <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
+            <div className="max-w-[64rem] text-center mx-auto">
+              <div className="mb-2 flex justify-center items-center">
+                <Icons.logo className="w-8 h-8 mr-2 sm:w-12 sm:h-12" />
+                <span className="font-heading text-lg sm:text-2xl">
+                  ByteURL
+                </span>
+              </div>
               <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl pb-4">
-                Simplify Your Links, Understand Your Audience
+                Simplify Your Links, Understand Your Audience.
               </h1>
               <div className="flex items-center justify-center">
                 <p className="text-xl text-[#64748B] max-w-[42rem] pb-4 leading-normal text-muted-foreground sm:text-xl sm:leading-8">

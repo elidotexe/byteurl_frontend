@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { signOut } from "next-auth/react";
 import { toast } from "../ui/use-toast";
 
+import { Metadata } from "next";
 import { LinksWithRedirectHistory, User } from "@/types";
 import { Button } from "@/components/ui/button";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
@@ -14,7 +15,7 @@ import { Icons } from "@/components/icons";
 import ItemSkeleton from "./item-skeleton";
 import MapBoxComponent from "./map-box";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Geolocation",
   description: "Get insights into where your audience is located.",
 };

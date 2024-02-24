@@ -2,10 +2,11 @@ import { redirect } from "next/navigation";
 
 import getCurrentUser from "@/lib/session";
 
+import { Metadata } from "next";
 import DashboardShell from "@/components/dashboard/shell";
 import Analytics from "@/components/dashboard/analytics";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Analytics",
   description:
     "Learn about your audience by tracking the performance of your links.",
