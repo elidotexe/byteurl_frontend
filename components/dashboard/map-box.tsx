@@ -14,7 +14,7 @@ const MapBoxComponent = ({ locations }: { locations: string[] }) => {
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/dark-v11",
       center: [-0.1278, 51.3909],
-      zoom: 6,
+      zoom: 5,
       attributionControl: false,
     });
 

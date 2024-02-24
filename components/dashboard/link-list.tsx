@@ -63,7 +63,7 @@ const LinkList = ({ user }: UserLinksProps) => {
   });
 
   return (
-    <>
+    <div style={{ overflowX: "auto" }}>
       {sortedLinks?.length ? (
         <>
           <LinkItem links={sortedLinks} columns={tableColumns} />
@@ -83,7 +83,7 @@ const LinkList = ({ user }: UserLinksProps) => {
           </Button>
         </EmptyPlaceholder>
       )}
-    </>
+    </div>
   );
 };
 

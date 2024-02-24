@@ -1,13 +1,8 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { cn } from "@/lib/utils";
 import getCurrentUser from "@/lib/session";
 
-import { buttonVariants } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
 import DashboardShell from "@/components/dashboard/shell";
-import DashboardHeader from "@/components/dashboard/header";
 import Analytics from "@/components/dashboard/analytics";
 
 const AnalyticsPage = async () => {
@@ -17,15 +12,6 @@ const AnalyticsPage = async () => {
 
   return (
     <DashboardShell>
-      <DashboardHeader
-        heading="Analytics"
-        text="Learn about your audience by tracking the performance of your links."
-      >
-        <Link className={cn(buttonVariants())} href="/dashboard/editor/0">
-          <Icons.add className="mr-2 h-4 w-4" />
-          New link
-        </Link>
-      </DashboardHeader>
       <Analytics user={user} />
     </DashboardShell>
   );

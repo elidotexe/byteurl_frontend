@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 
 import axios, { AxiosError } from "axios";
@@ -10,16 +11,23 @@ import { toast } from "../ui/use-toast";
 import { LinksWithRedirectHistory, User } from "@/types";
 import { Button } from "@/components/ui/button";
 import { EmptyPlaceholder } from "@/components/dashboard/empty-placeholder";
+import { DatePickerWithRange } from "./data-picker-range";
 import { Icons } from "@/components/icons";
+
 import ItemSkeleton from "./item-skeleton";
 import AreaChartComponent from "./area-chart";
 import BarChartComponent from "./pie-chart";
+import DashboardHeader from "./header";
 
 interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
 }
 
 const Analytics = ({ user }: UserLinksProps) => {
+  const [filteredLinks, setFilteredLinks] = useState<
+    LinksWithRedirectHistory[] | null
+  >(null);
+
   const {
     data: linksWithRedirectHistory,
     isLoading,
@@ -50,6 +58,12 @@ const Analytics = ({ user }: UserLinksProps) => {
 
   return (
     <>
+      <DashboardHeader
+        heading="Analytics"
+        text="Learn about your audience by tracking the performance of your links."
+      >
+        <DatePickerWithRange />
+      </DashboardHeader>
       {linksWithRedirectHistory?.length ? (
         <div>
           <AreaChartComponent

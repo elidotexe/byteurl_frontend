@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
 
 import {
   Form,

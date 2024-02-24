@@ -9,6 +9,7 @@ import { Icons } from "@/components/icons";
 import DashboardShell from "@/components/dashboard/shell";
 import DashboardHeader from "@/components/dashboard/header";
 import GeoLocation from "@/components/dashboard/geolocation";
+import { DatePickerWithRange } from "@/components/dashboard/data-picker-range";
 
 const GeoLocationPage = async () => {
   const user = await getCurrentUser();
@@ -21,14 +22,16 @@ const GeoLocationPage = async () => {
         heading="Geolocation"
         text="Get insights into where your audience is located."
       >
-        <Link className={cn(buttonVariants())} href="/dashboard/editor/0">
-          <Icons.add className="mr-2 h-4 w-4" />
-          New link
-        </Link>
+        <DatePickerWithRange />
       </DashboardHeader>
       <GeoLocation user={user} />
     </DashboardShell>
   );
 };
+
+// <Link className={cn(buttonVariants())} href="/dashboard/editor/0">
+//   <Icons.add className="mr-2 h-4 w-4" />
+//   New link
+// </Link>
 
 export default GeoLocationPage;
