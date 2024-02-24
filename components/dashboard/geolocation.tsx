@@ -14,6 +14,11 @@ import { Icons } from "@/components/icons";
 import ItemSkeleton from "./item-skeleton";
 import MapBoxComponent from "./map-box";
 
+export const metadata = {
+  title: "Geolocation",
+  description: "Get insights into where your audience is located.",
+};
+
 interface UserLinksProps extends React.HTMLAttributes<HTMLFormElement> {
   user: User;
 }

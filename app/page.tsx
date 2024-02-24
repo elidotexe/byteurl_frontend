@@ -34,12 +34,12 @@ const IndexPage = async () => {
           <section className="flex items-center justify-center py-32">
             <div className="max-w-[64rem] text-center">
               <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl pb-4">
-                An example app built using Next.js 13 server components.
+                Simplify Your Links, Understand Your Audience
               </h1>
               <div className="flex items-center justify-center">
                 <p className="text-xl text-[#64748B] max-w-[42rem] pb-4 leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-                  I'm building a web app with Next.js 13 and open sourcing
-                  everything. Follow along as we figure this out together.
+                  Effortlessly shorten URLs and gain valuable insights with our
+                  advanced analytics tools. Open-source and user-friendly.
                 </p>
               </div>
               <div className="flex items-center justify-center gap-4">

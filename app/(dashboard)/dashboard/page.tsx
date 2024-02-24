@@ -10,6 +10,10 @@ import DashboardShell from "@/components/dashboard/shell";
 import DashboardHeader from "@/components/dashboard/header";
 import LinkList from "@/components/dashboard/link-list";
 
+export const metadata = {
+  title: "Dashboard",
+};
+
 const DashboardPage = async () => {
   const user = await getCurrentUser();
 
