@@ -53,9 +53,9 @@ const PieChartComponent = ({
   }));
 
   return (
-    <div className="flex justify-between items-center">
-      <div>
-        <PieChart width={500} height={500}>
+    <div className="flex flex-col md:flex-row justify-between items-center">
+      <div className="mb-4 md:mr-4">
+        <PieChart width={400} height={300}>
           <Pie
             dataKey="count"
             nameKey="device"
@@ -71,7 +71,7 @@ const PieChartComponent = ({
       </div>
 
       <div>
-        <PieChart width={500} height={500}>
+        <PieChart width={400} height={300}>
           <Pie
             dataKey="count"
             nameKey="browser"

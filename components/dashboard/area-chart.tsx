@@ -45,7 +45,7 @@ const AreaChartComponent = ({
   });
 
   return (
-    <>
+    <div style={{ overflowX: "auto" }}>
       <h2 className="text-center">Monthly Click Performance</h2>
       <ResponsiveContainer width="100%" height={400}>
         <AreaChart
@@ -69,7 +69,7 @@ const AreaChartComponent = ({
           />
         </AreaChart>
       </ResponsiveContainer>
-    </>
+    </div>
   );
 };
 
